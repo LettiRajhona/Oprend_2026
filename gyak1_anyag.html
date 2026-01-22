@@ -1,0 +1,140 @@
+<p><span style="text-decoration: underline; font-size: 18pt;"><strong>C nyelvi ismertető</strong></span></p>
+<p><span style="font-size: 14pt;">A C egy imperat&iacute;v, procedur&aacute;lis programoz&aacute;si nyelv, amelyben a k&oacute;dot blokkokba, f&uuml;ggv&eacute;nyekbe &eacute;s proced&uacute;r&aacute;kba (elj&aacute;r&aacute;sokba) szervezz&uuml;k. A C nyelv lehetős&eacute;gei biztos&iacute;tott&aacute;k azt, hogy sz&aacute;mos oper&aacute;ci&oacute;s rendszer alapj&aacute;t k&eacute;pezze, mint p&eacute;ld&aacute;ul a Unixnak. Funkcionalit&aacute;s&aacute;nak h&aacute;la h&aacute;l&oacute;zati applik&aacute;ci&oacute;k, I/O funkci&oacute;k fejleszt&eacute;s&eacute;re &eacute;s processzkezel&eacute;si feladatokra haszn&aacute;lhat&oacute;.</span></p>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">Header f&aacute;jlok</span></strong></span></p>
+<p><span style="font-size: 14pt;">A k&oacute;db&aacute;zist modulariz&aacute;lhatjuk. Ekkor a .c kiterjeszt&eacute;sű k&oacute;dokat k&uuml;l&ouml;n f&aacute;jlokba szervezz&uuml;k, &eacute;s a benn&uuml;k implement&aacute;lt alprogramokhoz &eacute;s adatt&iacute;pusokhoz .h kiterjeszt&eacute;sű, &uacute;gynevezett header f&aacute;jlokat rendelhet&uuml;nk. Az include preprocesszor seg&iacute;ts&eacute;g&eacute;vel a ford&iacute;t&oacute;t arra utas&iacute;tjuk, hogy elősz&ouml;r ezeket a header f&aacute;jlokat n&eacute;zze meg, amely a futtat&aacute;shoz sz&uuml;ks&eacute;ges defin&iacute;ci&oacute;kat tartamazza.</span></p>
+<p><span style="font-size: 14pt;">A header f&aacute;jloknak k&eacute;t t&iacute;pus&aacute;t k&uuml;l&ouml;n&iacute;tj&uuml;k el. L&eacute;teznek felhaszn&aacute;l&oacute;-defini&aacute;lt header f&aacute;jlok, valamint standardok v&aacute;ltozatok. A C nyelvben 31 standard header f&aacute;jl &eacute;rhető el, melyek k&ouml;z&uuml;l a legismertebbek, legt&ouml;bbet haszn&aacute;ltak a k&ouml;vetkezők:</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;stdio.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Alapvető k&ouml;nyvt&aacute;r, amely az I/O műveleteket val&oacute;s&iacute;tja meg (ki&iacute;rat&aacute;s, beolvas&aacute;s...)&nbsp;</span></td>
+</tr>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;stdlib.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Leggyakrabban haszn&aacute;lt funkci&oacute;kat tartalmazza (tokeniz&aacute;l&aacute;s, mem&oacute;riafoglal&aacute;s...)</span></td>
+</tr>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;string.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Sz&aacute;mos k&uuml;l&ouml;nb&ouml;ző stringf&uuml;ggv&eacute;nyt tartalmaz, amellyel hosszt, &ouml;sszehasonl&iacute;t&aacute;st, m&aacute;sol&aacute;st v&eacute;gezhet&uuml;nk.</span></td>
+</tr>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;math.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Matematikai műveletek megval&oacute;s&iacute;t&aacute;s&aacute;ra haszn&aacute;lhat&oacute;.&nbsp;</span></td>
+</tr>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;time.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Időbeli funkci&oacute;k haszn&aacute;lat&aacute;ra alkalmas, &uacute;gy, mint az időbe&aacute;ll&iacute;t&aacute;s, randomiz&aacute;l&aacute;s.&nbsp;</span></td>
+</tr>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;errno.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Hibakezel&eacute;si k&ouml;nyvt&aacute;r, olyan műveleteket tartalmaz, mint az errno(), strerror() stb.</span></td>
+</tr>
+<tr>
+<td style="width: 18.7761%;"><span style="font-size: 14pt;">&lt;assert.h&gt;</span></td>
+<td style="width: 81.4318%;"><span style="font-size: 14pt;">Diagnosztikai &eacute;s debuggol&aacute;si inform&aacute;ci&oacute;kat tartalmaz.</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">Adatt&iacute;pusok</span></strong></span></p>
+<p><span style="font-size: 14pt;">A C nyelvben minden v&aacute;ltoz&oacute; rendelkezik &uacute;gynevezett adatt&iacute;pussal, amely meghat&aacute;rozza, hogy milyen t&iacute;pus&uacute; &eacute;rt&eacute;ket t&aacute;rolhat. Statikus t&iacute;pus&uacute; nyelv, vagyis minden v&aacute;ltoz&oacute; t&iacute;pus&aacute;t a deklar&aacute;ci&oacute;kor meg kell adnunk, &eacute;s nem v&aacute;ltoztathatjuk meg a fut&aacute;s sor&aacute;n.</span></p>
+<p><span style="font-size: 14pt;">Az adatt&iacute;pusokat h&aacute;rom k&uuml;l&ouml;nb&ouml;ző csoportba oszthatjuk.&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 14pt;">Alap (egyszerű) adatt&iacute;pusok: int, float, double, char, bool, void</span></li>
+<li><span style="font-size: 14pt;">Sz&aacute;rmaztatott t&iacute;pusok: t&ouml;mb, pointer, f&uuml;ggv&eacute;ny</span></li>
+<li><span style="font-size: 14pt;">Felhaszn&aacute;l&oacute; &aacute;ltal defini&aacute;lt adatt&iacute;pusok: uni&oacute;, strukt&uacute;ra, enum</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Ki&iacute;rat&aacute;suk form&aacute;tum specifik&aacute;torokkal val&oacute;sulhat meg (% jel ut&aacute;ni karakterrel) a printf f&uuml;ggv&eacute;nyben. Ezek k&uuml;l&ouml;nb&ouml;ző t&iacute;pusokat &eacute;s &eacute;rt&eacute;keket k&eacute;pesek szeml&eacute;ltetni.</span></p>
+<ul>
+<li><span style="font-size: 14pt;">%d, %i: decim&aacute;lis eg&eacute;sz sz&aacute;m (int)</span></li>
+<li><span style="font-size: 14pt;">%u: előjel n&eacute;lk&uuml;li eg&eacute;sz sz&aacute;m</span></li>
+<li><span style="font-size: 14pt;">%o: okt&aacute;lis sz&aacute;m</span></li>
+<li><span style="font-size: 14pt;">%x, %X: hexadecim&aacute;lis kis- &eacute;s nagybetű sz&aacute;mok</span></li>
+<li><span style="font-size: 14pt;">%f, %lf: lebegőpontos sz&aacute;m (double)</span></li>
+<li><span style="font-size: 14pt;">%e: exponenci&aacute;lis alak</span></li>
+<li><span style="font-size: 14pt;">%g: automatikus sz&aacute;m, az %f &eacute;s %e alakok k&ouml;z&uuml;l a r&ouml;videbb kiv&aacute;laszt&aacute;sa</span></li>
+<li><span style="font-size: 14pt;">%c: egyetlen karakter</span></li>
+<li><span style="font-size: 14pt;">%s: string, karaktert&ouml;mb</span></li>
+<li><span style="font-size: 14pt;">%p: pointer, mem&oacute;riac&iacute;m</span></li>
+<li><span style="font-size: 14pt;">%%: sz&aacute;zal&eacute;kjel</span></li>
+</ul>
+<p><span style="font-size: 14pt;">P&eacute;lda haszn&aacute;latukra:</span></p>
+<pre>printf("%d\n", 42); // eg&eacute;sz sz&aacute;m<br />printf("%.2f\n", 3.12159); // 2 tizedesjegy a t&ouml;rtből<br />printf("%c\n", 'a'); // karakter<br />printf("%s\n", "hello"); // karaktert&ouml;mb<br />printf("%p %%\n", (void*)&amp;a); // pointer </pre>
+<p><span style="text-decoration: underline; font-size: 18pt;"><strong>Pointerek</strong></span></p>
+<p><span style="font-size: 14pt;">A C nyelv mumusai a pointerek &eacute;s vel&uuml;k egy&uuml;tt a mem&oacute;riakezel&eacute;s. A pointer egy olyan v&aacute;ltoz&oacute;, amely egy m&aacute;sik v&aacute;ltoz&oacute; mem&oacute;riac&iacute;m&eacute;t t&aacute;rolja &eacute;rt&eacute;kk&eacute;nt. A pointer egy hasonl&oacute; t&iacute;pus&uacute; adatt&iacute;pusra mutat (p&eacute;ld&aacute;ul intre), l&eacute;trehoz&aacute;sa a * oper&aacute;torral t&ouml;rt&eacute;nik. Mem&oacute;riac&iacute;m lek&eacute;r&eacute;s&eacute;hez a referenciaoper&aacute;tor (&amp;) haszn&aacute;lata sz&uuml;ks&eacute;ges.</span></p>
+<p><span style="font-size: 14pt;">Az első k&oacute;dr&eacute;szlet bemutatja egy int t&iacute;pus&uacute; v&aacute;ltoz&oacute; &eacute;rt&eacute;k&eacute;nek &eacute;s mem&oacute;riac&iacute;m&eacute;nek ki&iacute;r&aacute;s&aacute;t.</span></p>
+<pre>int n = 20;<br />printf("%d", n); // n &eacute;rt&eacute;ke 20<br />printf("%p", &amp;n); // n mem&oacute;riac&iacute;me <span>0x7ffe5367e044</span></pre>
+<p><span style="font-size: 14pt;">A m&aacute;sodik p&eacute;lda bemutatja ennek az int t&iacute;pus&uacute; v&aacute;ltoz&oacute;nak haszn&aacute;lat&aacute;t pointer seg&iacute;ts&eacute;g&eacute;vel.</span></p>
+<pre>int n = 20;<br />int* ptr = &amp;n;<br /><br />printf("%d\n", n); // n &eacute;rt&eacute;ke 20<br />printf("%p\n", &amp;n); // n mem&oacute;riac&iacute;me <span>0x7ffe5367e044</span><br />printf("%p\n", ptr); // ptr mutat&oacute; &eacute;rt&eacute;ke n mem&oacute;riac&iacute;me, vagyis <span>0x7ffe5367e044</span></pre>
+<p><span style="font-size: 14pt;">A p&eacute;lda utols&oacute; sor&aacute;ban tal&aacute;lhat&oacute; műveletet refer&aacute;l&aacute;snak nevezz&uuml;k, vagyis az n v&aacute;ltoz&oacute; mem&oacute;riac&iacute;m&eacute;t adjuk vissza. A derefer&aacute;l&aacute;s ezzel szemben a pointer &aacute;ltal mutatott &eacute;rt&eacute;ket olvassa ki, &iacute;gy p&eacute;ld&aacute;ul a pointer &aacute;ltal mutatott &eacute;rt&eacute;kkel tov&aacute;bb dolgozhatunk.</span></p>
+<pre>int n = 20; <br />int* ptr = &amp;n; // &aacute;tadjuk n mem&oacute;riac&iacute;m&eacute;t, refer&aacute;l&aacute;s<br />int y = *ptr; // y = n, derefer&aacute;l&aacute;s</pre>
+<p><span style="text-decoration: underline; font-size: 14pt;"><strong>Strukt&uacute;ra, uni&oacute; &ndash; &ouml;sszetett adatt&iacute;pusok</strong></span></p>
+<p><span style="font-size: 14pt;">A strukt&uacute;ra olyan &ouml;sszetett adatt&iacute;pus, amely k&uuml;l&ouml;nb&ouml;ző t&iacute;pus&uacute; &eacute;rt&eacute;keket, tagokat csoportos&iacute;t egy n&eacute;v alatt, &iacute;gy logikailag &ouml;sszetartoz&oacute; adatokat egy&uuml;tt kezelhet&uuml;nk. Mivel a C nyelvben nincsenek oszt&aacute;lyok, amolyan "kezdetleges oszt&aacute;lyk&eacute;nt" val&oacute;s&iacute;thatjuk meg a strukt&uacute;r&aacute;kat.</span></p>
+<p><span style="font-size: 14pt;">Tegy&uuml;k fel, hogy szeretn&eacute;nk szem&eacute;lyeket t&aacute;rolni egy strukt&uacute;r&aacute;ban, azon bel&uuml;l is a nev&uuml;ket, &eacute;letkorukat &eacute;s magass&aacute;gukat. Ehhez egy karaktert&ouml;mbre, egy eg&eacute;sz t&iacute;pus&uacute; &eacute;rt&eacute;kre &eacute;s egy lebegőpontos sz&aacute;mra lesz sz&uuml;ks&eacute;g&uuml;nk.</span></p>
+<pre>struct Szemely {<br />   char nev[24];<br />   int eletkor;<br />   float magassag;<br />};</pre>
+<p><span style="font-size: 14pt;">K&eacute;sz&iacute;ts&uuml;nk egy p&eacute;ld&aacute;nyt ebből a strukt&uacute;r&aacute;b&oacute;l, &eacute;s adjunk &eacute;rt&eacute;ket az egyes tagoknak. Ehhez a strukt&uacute;ra_neve.tag_neve szintaktik&aacute;t haszn&aacute;ljuk a . oper&aacute;torral.&nbsp;</span></p>
+<pre>struct Szemely anna;<br />p1.eletkor = 25;<br />p1.magassag = 1.75;<br />strcpy(p1.nev, "Anna")</pre>
+<p><span style="font-size: 14pt;">Amennyiben pointer&uuml;nk van a strukt&uacute;r&aacute;ra, a ny&iacute;l pointert alkalmazzuk, ami a pointer derefer&aacute;l&aacute;s&aacute;t &eacute;s a tag el&eacute;r&eacute;s&eacute;t egyszerre elv&eacute;gzi.</span></p>
+<pre>struct Szemely anna;<br />struct Szemely *ptr = &amp;anna; // anna strukt&uacute;r&aacute;ra mutat&oacute; mutat&oacute;<br /><br />ptr-&gt;eletkor = 30; // anna.eletkor = 30<br />strcpy(ptr-&gt;nev, "Anna"); // anna.nev = "Anna"<br /><br />// haszn&aacute;lhat&oacute; forma m&eacute;g a (*ptr).eletkor = 30 is</pre>
+<p><span style="font-size: 14pt;">Az uni&oacute; olyan &ouml;sszetett t&iacute;pus, ahol minden tag ugyanazt a mem&oacute;riahelyet osztja meg. Egyszerre egy tag &eacute;rt&eacute;ke lehet &eacute;rv&eacute;nyes. M&eacute;rete a legnagyobb tag m&eacute;rete. Akkor hasznos, ha t&ouml;bbf&eacute;le t&iacute;pus&uacute; adatot kell t&aacute;rolni ugyanazon a helyen, de minden időpontban egyszerre csak egyet.</span></p>
+<pre>union EgyErtekEgyszerre {<br />   int egesz;<br />   float lebegopontos;<br />   char karakter;<br />};<br /><br />int main() {<br />   union EgyErtekEgyszerre unio;<br />   e.i = 24;<br /><br />   return 0;<br />}</pre>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">F&uuml;ggv&eacute;nyek</span></strong></span></p>
+<p><span style="font-size: 14pt;">A f&uuml;ggv&eacute;nyek nevezett k&oacute;dr&eacute;szletek, amelyek param&eacute;terrel h&iacute;vhat&oacute;ak meg. Csoportos&iacute;that&oacute;ak visszat&eacute;r&eacute;si &eacute;rt&eacute;k szerint, ekkor vagy nem ad vissza &eacute;rt&eacute;ket (void), vagy t&iacute;pusmegfelelő &eacute;rt&eacute;ket ad vissza (adatt&iacute;pusok, pointerek). Param&eacute;terezett f&uuml;ggv&eacute;ny eset&eacute;n param&eacute;ternek egyszerű &eacute;s &ouml;sszetett t&iacute;pusok, pointerek is &aacute;tadhat&oacute;ak.</span></p>
+<p><span style="font-size: 14pt;">A C program alap f&uuml;ggv&eacute;nye a main, pontosabban a program bel&eacute;p&eacute;si pontja, amely futtat&aacute;s sor&aacute;n megh&iacute;v&aacute;sra ker&uuml;l. Alap&eacute;rtelmezetten int t&iacute;pus&uacute;, &eacute;s a visszat&eacute;r&eacute;si &eacute;rt&eacute;ke 0, amely a sikeres v&eacute;grehajt&aacute;st jel&ouml;li. A main f&uuml;ggv&eacute;ny fel&eacute;p&iacute;t&eacute;se a k&ouml;vetkezőben l&aacute;that&oacute;:</span></p>
+<pre>int main() {<br />   // k&oacute;dr&eacute;szlet<br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">Amennyiben parancssori param&eacute;tereket adunk &aacute;t a programnak a megh&iacute;v&aacute;skor, a f&uuml;ggv&eacute;ny fejl&eacute;c&eacute;hez kettő parancssori param&eacute;ter adhat&oacute;. Az argc az argumentumok sz&aacute;m&aacute;t, az *argv[] stringk&eacute;nt az argumentumok t&ouml;mbj&eacute;t jelenti.</span></p>
+<pre>int main(int argc, char *argv[]) {<br />   // k&oacute;dr&eacute;szlet<br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">Saj&aacute;t f&uuml;ggv&eacute;ny k&eacute;sz&iacute;t&eacute;se eset&eacute;n a f&uuml;ggv&eacute;ny szintaxisa a k&ouml;vetkező:</span></p>
+<pre>visszateresi_ertek fuggveny_neve(parameterek) {<br />   // utas&iacute;t&aacute;sok<br />   return visszateresi_ertek; // amennyiben nem void t&iacute;pus&uacute;<br />}</pre>
+<p><span style="font-size: 14pt;">A beolvas&aacute;shoz a scanf("form&aacute;tum", &amp;v&aacute;ltoz&oacute;), a ki&iacute;rat&aacute;shoz a printf("form&aacute;tum", v&aacute;ltoz&oacute;) f&uuml;ggv&eacute;nyeket haszn&aacute;ljuk.</span></p>
+<p><span style="text-decoration: underline; font-size: 14pt;"><strong>Be&eacute;p&iacute;tett string f&uuml;ggv&eacute;nyek</strong></span></p>
+<p><span style="font-size: 14pt;">B&aacute;r a C nyelv nem tartalmaz string adatt&iacute;pust, dinamikus vagy statikus karaktert&ouml;mbbel helyettes&iacute;thető. A &lt;string.h&gt; header sz&aacute;mos be&eacute;p&iacute;tett f&uuml;ggv&eacute;nyt tartalmaz, amelyekkel az egyes sz&ouml;vegműveletek elv&eacute;gezhetők.</span></p>
+<ul>
+<li><span style="font-size: 14pt;">strlen(): visszaadja a karaktert&ouml;mb hossz&aacute;t, amibe nem sz&aacute;m&iacute;tja bele a karakterl&aacute;nc v&eacute;g&eacute;n tal&aacute;lhat&oacute; null karaktert (\0)</span></li>
+</ul>
+<pre>char myArray[] = "abc";<br />printf("%lu", strlen(myArray)); // eredm&eacute;ny: 3</pre>
+<ul>
+<li><span style="font-size: 14pt;">strcpy(): a forr&aacute;st&ouml;mb elemeit &aacute;tm&aacute;solja a megadott c&eacute;lt&ouml;mb tartalm&aacute;ba</span></li>
+</ul>
+<pre>char source[] = "abc";<br />char destination[10];<br />strcpy(source, destination); // destination = "abc"</pre>
+<ul>
+<li><span style="font-size: 14pt;">strcat(): konkaten&aacute;ci&oacute; művelet elv&eacute;gz&eacute;s&eacute;re haszn&aacute;lhat&oacute;, vagyis sz&ouml;vegek &ouml;sszefűz&eacute;s&eacute;re, az első param&eacute;terben megadott t&ouml;mbbe ker&uuml;l a m&aacute;sodik &eacute;rt&eacute;ke</span></li>
+</ul>
+<pre>char firstPart[30] = "Hello, ";<br />char secondPart[] = "World!";<br />strcat(firstPart, secondPart); // firstPart = "Hello, World!"</pre>
+<ul>
+<li><span style="font-size: 14pt;">strcmp(): lexikografikus m&oacute;don &ouml;sszehasonl&iacute;tja a k&eacute;t megadott string tartalm&aacute;t, &eacute;s a visszat&eacute;r&eacute;si &eacute;rt&eacute;ke egy int lesz, amiben az első sz&ouml;veghez hasonl&iacute;tott m&aacute;sodik sz&ouml;veg k&ouml;z&ouml;tti elt&eacute;r&eacute;st adja meg</span></li>
+</ul>
+<pre>char firstString[] = "abc";<br />char secondString[] = "abcd";<br /><br />int res = strcmp(firstString, secondString);<br />if (res == 0)<br />   printf("firstString and secondString are same");<br />else if (res &lt; 0)<br />   printf("firstString is lexicographically smaller than secondString");<br />else<br />   printf("firstString is lexicographically greater than secondString");<br /><br />// res = -100</pre>
+<ul>
+<li><span style="font-size: 14pt;">strncpy(), strncat(), strncmp(): a felsorolt műveletek, csak egy harmadik param&eacute;terben megadott n karakterre vonatkoz&oacute;an</span></li>
+<li><span style="font-size: 14pt;">strchr(): megadja annak az indexnek a sz&aacute;m&aacute;t, ahol a m&aacute;sodik param&eacute;terben megadott karakter elősz&ouml;r megtal&aacute;lhat&oacute; a sz&ouml;vegben, k&uuml;l&ouml;nben null &eacute;rt&eacute;ket ad vissza</span></li>
+</ul>
+<pre>char myArray[] = "Hello, World!";<br />char *res = strchr(myArray, 'o');<br /><br />if (res != NULL)<br />   printf("Character found at: %ld index", res - myArray);<br /><br />// res = 4</pre>
+<ul>
+<li><span style="font-size: 14pt;">strrchr(): hasonl&oacute; az előzőh&ouml;z, a karakter utols&oacute; előfordul&aacute;s&aacute;t mutatja meg a sz&ouml;vegben</span></li>
+<li><span style="font-size: 14pt;">strstr(): sz&ouml;vegek formatt&aacute;l&aacute;s&aacute;ra &eacute;s bufferben t&aacute;rol&aacute;s&aacute;ra haszn&aacute;lhat&oacute;, hasonl&oacute; a printf()-hez, de itt nem &iacute;ratjuk ki az eredm&eacute;nyt</span></li>
+</ul>
+<pre>char myArray[50];<br />int n = 10;<br /><br />sprintf(s, "The value of n is %d", n);<br /><br />// s = "The value of n is 10"</pre>
+<ul>
+<li><span style="font-size: 14pt;">strtok(): a karakterl&aacute;ncot bizonyos karakterek ment&eacute;n feldarabol, &eacute;s tokenekk&eacute; alak&iacute;tja</span></li>
+</ul>
+<pre>char words[] = "Hello, World, C!";<br />char *tokens = strtok(s, ", ");<br /><br />// tokens = "Hello", "World", "C"</pre>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">Vez&eacute;rl&eacute;si szerkezetek</span></strong></span></p>
+<p><span style="font-size: 14pt;">Szekvencia: utas&iacute;t&aacute;sokat sorrendben v&eacute;grehajtjuk.</span></p>
+<p><span style="font-size: 14pt;">El&aacute;gaz&aacute;s (szelekci&oacute;): a program egy felt&eacute;tel alapj&aacute;n d&ouml;nt, melyik &aacute;gat hajtja v&eacute;gre. Haszn&aacute;lhat&oacute; if, switch szerkezet.</span></p>
+<p><span style="font-size: 14pt;">Ciklus (iter&aacute;ci&oacute;): ugyanazt a k&oacute;dr&eacute;szletet t&ouml;bbsz&ouml;r hajtja v&eacute;gre egy felt&eacute;tel alapj&aacute;n. Haszn&aacute;lhat&oacute; for, while, do-while.</span></p>
+<p><span style="text-decoration: underline;"><span style="font-size: 14pt;"><strong>Ford&iacute;t&aacute;s &eacute;s futtat&aacute;s</strong></span></span></p>
+<p><span style="font-size: 14pt;">A k&oacute;d futtat&aacute;s&aacute;hoz egy ford&iacute;t&oacute;programra van sz&uuml;ks&eacute;g, ami a .c kiterjeszt&eacute;sű &aacute;llom&aacute;nyb&oacute;l egy futtathat&oacute; programot hoz l&eacute;tre. Az objektumf&aacute;jlra az&eacute;rt van sz&uuml;ks&eacute;g, hogy a sz&aacute;m&iacute;t&oacute;g&eacute;p sz&aacute;m&aacute;ra &eacute;rthető g&eacute;pi k&oacute;dot hozzunk l&eacute;tre.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">A ford&iacute;t&aacute;s sor&aacute;n a C nyelvű forr&aacute;sf&aacute;jlb&oacute;l az előfeldolgoz&oacute; seg&iacute;ts&eacute;g&eacute;vel egy .i &aacute;llom&aacute;ny k&eacute;sz&uuml;l. Ebben a l&eacute;p&eacute;sben a program az include-okat beilleszti, kifejti a define kulcssz&oacute;val ell&aacute;tott k&oacute;dr&eacute;szletet, &eacute;s t&ouml;rli a felesleges kommenteket. Az előford&iacute;t&oacute; ut&aacute;n egy .s kiterjeszt&eacute;sű Assembly k&oacute;dot kapunk, amely tov&aacute;bbi ford&iacute;t&aacute;s sor&aacute;n egy .o objektumf&aacute;jll&aacute; v&aacute;ltozik. Az objektumf&aacute;jl r&eacute;szlegesen tartalmaz g&eacute;pi k&oacute;dot. Ezt az objektumf&aacute;jlt alak&iacute;tjuk futtathat&oacute; .out &aacute;llom&aacute;nny&aacute;, ami m&aacute;r teljesen g&eacute;pi k&oacute;dot tartalmaz.</span></p>
+<p><span style="font-size: 14pt;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://canvas.instructure.com/courses/13939147/files/330000119/preview" alt="GCC_CompilationProcess.png" data-api-endpoint="https://canvas.instructure.com/api/v1/courses/13939147/files/330000119" data-api-returntype="File" /></span></p>
+<p><span style="font-size: 14pt;">A legismertebb C, C++ ford&iacute;t&oacute;program a GCC (GNU Compiler Collection). A ford&iacute;t&aacute;s sor&aacute;n a a kulcssz&oacute; ut&aacute;n meg kell adni a forr&aacute;sf&aacute;jl nev&eacute;t, az -o kapcsol&oacute;val pedig egyedi nevet &aacute;ll&iacute;thatunk be a futtathat&oacute; &aacute;llom&aacute;nynak. Az al&aacute;bbi p&eacute;ld&aacute;ban egy &aacute;ltal&aacute;nos ford&iacute;t&aacute;s &eacute;s egy n&eacute;vvel megadott ford&iacute;t&aacute;s l&aacute;that&oacute; Linux k&ouml;rnyezetben.</span></p>
+<pre>gcc forrasfajl.c ## eredm&eacute;nye a.out &aacute;llom&aacute;ny<br />gcc forrasfajl.c -o nev ## eredm&eacute;nye nev &aacute;llom&aacute;ny</pre>
+<p><span style="font-size: 14pt;">Az &aacute;llom&aacute;nyok futtat&aacute;sa ekkor ./ seg&iacute;ts&eacute;g&eacute;vel val&oacute;sul meg.</span></p>
+<pre>./a.out<br />./nev</pre>
+<p><span style="font-size: 14pt;">Windows k&ouml;rnyezetben a kimeneti f&aacute;jl .exe kiterjeszt&eacute;st kap.</span></p>
+<p>&nbsp;</p>
+<p><span style="text-decoration: underline; background-color: #c2e0f4; font-size: 14pt;"><strong>&Oacute;rai feladatok:</strong></span></p>
+<p><span style="font-size: 14pt;">K&eacute;sz&iacute;ts&uuml;nk min_max() n&eacute;ven f&uuml;ggv&eacute;nyt, amely param&eacute;terk&eacute;nt egy eg&eacute;sz sz&aacute;mokat tartalmaz&oacute; t&ouml;mb&ouml;t &eacute;s annak hossz&aacute;t adjuk meg, &eacute;s adja vissza a t&ouml;mb legkisebb &eacute;s legnagyobb elem&eacute;t egy strukt&uacute;ra seg&iacute;ts&eacute;g&eacute;vel! A program v&eacute;g&eacute;n &iacute;rjuk ki mindk&eacute;t &eacute;rt&eacute;ket!</span></p>
+<p><span style="font-size: 14pt;">K&eacute;sz&iacute;ts&uuml;nk f&uuml;ggv&eacute;nyt reverse_array() n&eacute;ven, amely pointereken kereszt&uuml;l megford&iacute;t egy int t&iacute;pus&uacute; t&ouml;mb&ouml;t!</span></p>
+<p><span style="font-size: 14pt;">&Iacute;rjunk olyan programot, amely beolvas egy sort a felhaszn&aacute;l&oacute;t&oacute;l, megvizsg&aacute;lja, hogy tartalmazza-e az 'e' karaktert, ki&iacute;rja az első &eacute;s utols&oacute; előfordul&aacute;si index&eacute;t, hozz&aacute;fűzi a "!!!" karakterl&aacute;ncot, &eacute;s ki&iacute;rja a m&oacute;dos&iacute;tott stringet!</span></p>
+<p><span style="font-size: 14pt;">&Iacute;rjunk f&uuml;ggv&eacute;nyt, amely saj&aacute;t strlen()-k&eacute;nt funkcion&aacute;l!</span></p>
+<p><span style="font-size: 14pt;">&Iacute;rjuk meg &uacute;gy a main f&uuml;ggv&eacute;nyt, hogy param&eacute;terk&eacute;nt &aacute;tadunk kettő eg&eacute;sz sz&aacute;mot, &eacute;s &ouml;sszeadjuk őket!</span></p>
