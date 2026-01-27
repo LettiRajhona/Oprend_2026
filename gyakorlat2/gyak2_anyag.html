@@ -1,0 +1,271 @@
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 18pt;">C nyelvi halad&oacute; ismertető</span></strong></span></p>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">Dinamikus mem&oacute;riafoglal&aacute;s</span></strong></span></p>
+<p><span style="font-size: 14pt;">A C nyelv k&uuml;l&ouml;n&ouml;s ismertetőjegye a dinamikus mem&oacute;riafoglal&aacute;s. Alapvetően a nyelv viszontags&aacute;gai miatt nem tudunk olyan egyszerűen list&aacute;kat (v&aacute;ltoz&oacute; m&eacute;retű t&ouml;mb&ouml;ket) l&eacute;trehozni, mint p&eacute;ld&aacute;ul Jav&aacute;ban. Ehhez dinamikus mem&oacute;riafoglal&aacute;sra van sz&uuml;ks&eacute;g&uuml;nk, amely azt jelenti, hogy a programoz&oacute; lefoglalhatja, &aacute;tm&eacute;retezheti, felszabad&iacute;thatja azt a virtu&aacute;lis mem&oacute;riater&uuml;letet, amelyet &eacute;ppen haszn&aacute;lni akar. Ez&aacute;ltal a t&ouml;mb&ouml;k m&eacute;ret&eacute;t nem kell statikusan be&aacute;ll&iacute;tani, tetsz&eacute;s szerint n&ouml;velhetőek, cs&ouml;kkenthetőek. Fontos, hogy ez a mem&oacute;ria a heapen tal&aacute;lhat&oacute;, nem a stacken.</span></p>
+<p><span style="font-size: 14pt;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://canvas.instructure.com/courses/13939147/files/330316175/preview" alt="Memory-Layout-of-C-Program.webp" data-api-endpoint="https://canvas.instructure.com/api/v1/courses/13939147/files/330316175" data-api-returntype="File" />&nbsp;</span></p>
+<p><span style="font-size: 14pt;">A foglal&aacute;s f&uuml;ggv&eacute;nye a malloc(), vagyis memory allocation, egy &ouml;sszef&uuml;ggő mem&oacute;riablokk lefoglal&aacute;s&aacute;ra szolg&aacute;l. A malloc() &aacute;ltal lefoglalt mem&oacute;ria inicializ&aacute;latlan, tartalmaz szemetet.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">Tegy&uuml;k fel, hogy szeretn&eacute;nk egy &ouml;telemű, v&aacute;ltoz&oacute; hossz&uacute;s&aacute;g&uacute; t&ouml;mb&ouml;t k&eacute;sz&iacute;teni. Ehhez a malloc() f&uuml;ggv&eacute;ny&uuml;nkben meg kell adni, milyen t&iacute;pus&uacute; &eacute;rt&eacute;keket haszn&aacute;lunk, tov&aacute;bb&aacute; meg kell adni ezek b&aacute;jtban m&eacute;rt m&eacute;ret&eacute;t is. A p&eacute;ld&aacute;ban k&eacute;tf&eacute;le megold&aacute;sa l&aacute;tszik a mem&oacute;riafoglal&aacute;snak: az első esetben az int adatt&iacute;pus m&eacute;ret&eacute;t lek&eacute;rj&uuml;k, &eacute;s azt beszorozva &aacute;tadjuk, a kommentelt esetben pedig kisz&aacute;m&iacute;tjuk magunkt&oacute;l azt a b&aacute;jtm&eacute;retet, amit haszn&aacute;lni fogunk (az int adatt&iacute;pus m&eacute;rete 4 b&aacute;jt). A pointer v&aacute;ltoz&oacute; mindig a lefoglalt mem&oacute;ria elej&eacute;re, kezdőc&iacute;m&eacute;re mutat.</span></p>
+<pre>int main() {<br />   int *ptr = (int*)malloc(5 * sizeof(int));<br />   // int *ptr = (int*)malloc(20);<br /><br />   for (int i = 0; i &lt; 5; i++) {<br />      ptr[i] = i + 1;<br />      printf("%d ", ptr[i]);<br />   }<br /><br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">Ha kifogyunk a rendelkez&eacute;sre &aacute;ll&oacute; mem&oacute;riater&uuml;letből, a malloc() failel &eacute;s nullt ad vissza. &Eacute;rdemes ilyenkor egy ellenőrz&eacute;st v&eacute;gezni a k&oacute;d tov&aacute;bbi r&eacute;sze előtt, hogy biztons&aacute;gosan kil&eacute;pj&uuml;nk hiba eset&eacute;n a programb&oacute;l.</span></p>
+<pre>int main() {<br />   int *ptr = (int*)malloc(5 * sizeof(int));<br />   <br />   if (ptr == NULL) {<br />      printf("Error");<br />      exit(0); // kil&eacute;p&eacute;s a programb&oacute;l<br /><br />   // k&oacute;d tov&aacute;bbi r&eacute;sze<br /><br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">A malloc()-hoz hasonl&oacute; f&uuml;ggv&eacute;ny a calloc(), contiguous allocation, amely a lefoglalt mem&oacute;riater&uuml;let egyes r&eacute;szeit 0-ra inicializ&aacute;lja. A realloc() pedig m&oacute;dos&iacute;tja a mutat&oacute; kezdőc&iacute;mű mem&oacute;ria m&eacute;ret&eacute;t egy &uacute;jonnan megadott mem&oacute;riam&eacute;ret szerint. A tartalom ekkor megmarad.</span></p>
+<p><span style="font-size: 14pt;">A lefoglalt mem&oacute;ri&aacute;t előbb-ut&oacute;bb fel kell szabad&iacute;tani, ha m&aacute;s &eacute;rt&eacute;ket szeretn&eacute;nk a hely&eacute;re tenni. A mem&oacute;ria felszabad&iacute;t&aacute;s&aacute;hoz a free() f&uuml;ggv&eacute;ny sz&uuml;ks&eacute;ges, amelynek param&eacute;terk&eacute;nt &aacute;t kell adni a felszabad&iacute;tand&oacute; mutat&oacute;t. Haszn&aacute;lat&aacute;val a mem&oacute;riapazarl&aacute;s cs&ouml;kkenthető.</span></p>
+<p><span style="font-size: 14pt;">N&eacute;zz&uuml;k az előző k&oacute;dr&eacute;szletet, amellyel egy &ouml;telemű dinamikus t&ouml;mb&ouml;t k&eacute;sz&iacute;tett&uuml;nk.&nbsp;</span></p>
+<pre>int main() {<br />   int *ptr = (int*)malloc(5 * sizeof(int));<br />   // int *ptr = (int*)malloc(20);<br /><br />   for (int i = 0; i &lt; 5; i++) {<br />      ptr[i] = i + 1;<br />      printf("%d ", ptr[i]);<br />   }<br /><br />   free(ptr); // mutat&oacute; &eacute;s vele egy&uuml;tt a t&ouml;mb felszabad&iacute;t&aacute;sa<br /><br />   return 0;<br />}</pre>
+<p><span style="text-decoration: underline; font-size: 14pt;"><strong>Randomiz&aacute;l&aacute;s &eacute;s időkezel&eacute;s</strong></span></p>
+<p><span style="font-size: 14pt;">A C-ben az időkezel&eacute;s műveletei a &lt;time.h&gt; headerben tal&aacute;lhat&oacute;k. Ebbe beletartoznak k&uuml;l&ouml;nb&ouml;ző adatt&iacute;pusok, makr&oacute;k &eacute;s f&uuml;ggv&eacute;nyek is.</span></p>
+<p><span style="font-size: 14pt;">A time_t egy időt reprezent&aacute;l&oacute; adatt&iacute;pus, amely egy adott időpontot &aacute;br&aacute;zol, &aacute;ltal&aacute;ban a Unix-epoch kezdet&eacute;től eltelt m&aacute;sodperceket sz&aacute;molva. Az Unix-epoch ismerős lehet t&ouml;bbeknek: ennek kezdete az az 1970. janu&aacute;r 1. 00:00:00 UTC időpont, ami &ndash; mivel 32 bites reprezent&aacute;ci&oacute;r&oacute;l besz&eacute;l&uuml;nk &ndash; 2038. janu&aacute;r 19. 03:14:07 UTC idej&eacute;ben el&eacute;ri a v&eacute;g&eacute;t, &eacute;s a t&iacute;pus betelik, nem fog tudni t&ouml;bb m&aacute;sodpercet tartalmazni. A t&uacute;lcsordul&aacute;s miatt a rendszerek 1901. december 13-&aacute;t fognak mutatni.</span></p>
+<p><span style="font-size: 14pt;">Abban az esetben, ha szeretn&eacute;nk tudni, mennyi m&aacute;sodperc telt el a kezdetek &oacute;ta, h&iacute;vjuk meg a time() f&uuml;ggv&eacute;nyt, param&eacute;ternek pedig nullt adjunk &aacute;t. Ekkor a kimenet egy sz&aacute;m lesz, pontosabban azon m&aacute;sodpercek darabsz&aacute;ma, amelyek az epoch indul&aacute;s&aacute;t&oacute;l kezdődően elteltek.</span></p>
+<pre>#include &lt;stdio.h&gt;<br />#include &lt;time.h&gt;<br /><br />int main() {<br />   time_t now = time(NULL);<br />   printf("%ld\n", now); // now &eacute;rt&eacute;ke az oldal k&eacute;sz&iacute;t&eacute;sekor = <span>1769098836<br /><br /></span>   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">Idők&uuml;l&ouml;nbs&eacute;gek sz&aacute;m&iacute;t&aacute;s&aacute;ra a difftime() f&uuml;ggv&eacute;ny haszn&aacute;lhat&oacute;. K&eacute;t time_t t&iacute;pus&uacute; param&eacute;tert v&aacute;r, amelyekből egy double lebegőpontos sz&aacute;mot ad vissza. A visszakapott &eacute;rt&eacute;k pozit&iacute;v &eacute;s negat&iacute;v is lehet, mindig az első param&eacute;terből vonja ki a m&aacute;sodikat.</span></p>
+<pre>#include &lt;stdio.h&gt;<br />#include &lt;time.h&gt;<br /><br />int main() {<br />   int time_t time1 = 169534;<br />   int time_t time2 = time(NULL);<br /><br />   printf("Difference: %.2f seconds", difftime(time2, time1)); // a k&eacute;sz&iacute;t&eacute;s időpontj&aacute;ban az &eacute;rt&eacute;k 1768929693.00<br /><br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">Az emberi szemmel k&ouml;nnyebben olvashat&oacute; időt egy tm strukt&uacute;r&aacute;val &eacute;rhetj&uuml;k el, amely sz&aacute;mos k&uuml;l&ouml;nb&ouml;ző tagot tartalmaz a pontos időpont meghat&aacute;roz&aacute;s&aacute;ra. Mind a 9 tagja int t&iacute;pus&uacute;.</span></p>
+<pre>struct tm {<br />   int tm_sec; // m&aacute;sodperc [0-60]<br />   int tm_min; // perc [0-59]<br />   int tm_hour; // &oacute;ra [0-23]<br />   int tm_mday; // h&oacute;nap napjai [1-31]<br />   int tm_mon; // h&oacute;nap [0-11], ahol 0 = janu&aacute;r<br />   int tm_year; // &eacute;vek sz&aacute;ma 1900 &oacute;ta<br />   int tm_wday; // h&eacute;t napja [0-6], ahol 0 = vas&aacute;rnap<br />   int tm_yday; // &eacute;v napja [0-365]<br />   int tm_isdst; // ny&aacute;ri idősz&aacute;m&iacute;t&aacute;s<br />}</pre>
+<p><span style="font-size: 14pt;">Amikor lek&eacute;rj&uuml;k az időt a time(NULL) f&uuml;ggv&eacute;nyh&iacute;v&aacute;s seg&iacute;ts&eacute;g&eacute;vel, egy time_t t&iacute;pus&uacute; v&aacute;ltoz&oacute;ban t&aacute;roljuk el. Azonban, ha ezt a time_t t&iacute;pus&uacute; &eacute;rt&eacute;ket szeretn&eacute;nk tm strukt&uacute;rak&eacute;nt felbontani, a localtime() f&uuml;ggv&eacute;ny haszn&aacute;lat&aacute;ra van sz&uuml;ks&eacute;g. A localtime() helyi idő szerint pontja fel a time_t &eacute;rt&eacute;ket, miut&aacute;n az időpont mem&oacute;riac&iacute;m&eacute;t &aacute;tadtuk.</span></p>
+<pre>time_t now = time(NULL);<br />struct tm *time_in_struct = localtime(&amp;now);</pre>
+<p><span style="font-size: 14pt;">A random sz&aacute;mgener&aacute;l&aacute;shoz haszn&aacute;lhat&oacute; f&uuml;ggv&eacute;nyek a rand() &eacute;s az srand(). A rand() egy pszeudov&eacute;letlen eg&eacute;sz sz&aacute;mot ad vissza 0-t&oacute;l 32767-ig (RAND_MAX) tart&oacute; tartom&aacute;nyon. Ha egy adott tartom&aacute;nyon bel&uuml;li sz&aacute;mot szeretn&eacute;nk lek&eacute;rni, akkor t&ouml;bbf&eacute;le lehetős&eacute;g &aacute;ll rendelkez&eacute;sre.</span></p>
+<pre>int rand1 = rand() % 10; // 0-9 k&ouml;z&ouml;tti sz&aacute;m<br />int rand2 = rand() % 10 + 1; // 1-10 k&ouml;z&ouml;tti sz&aacute;m<br />int rand3 = rand() % (b - a + 1) + a; // a-b k&ouml;z&ouml;tti sz&aacute;m</pre>
+<p><span style="font-size: 14pt;">Ehhez az srand() f&uuml;ggv&eacute;ny seed be&aacute;ll&iacute;t&aacute;s&aacute;ra van sz&uuml;ks&eacute;g, ami egy random sz&aacute;mgener&aacute;tor kezdő&eacute;rt&eacute;k&eacute;t &aacute;ll&iacute;tja be. Ha nincs megh&iacute;vva, minden programfut&aacute;skor ugyanazokat a sz&aacute;mokat adja vissza. &Aacute;ltal&aacute;nos haszn&aacute;latakor a time(NULL) param&eacute;ter &aacute;tad&aacute;s&aacute;val az aktu&aacute;lis m&aacute;sodpercidőt haszn&aacute;lja alapul, &iacute;gy minden futtat&aacute;skor m&aacute;s eredm&eacute;nyt kapunk.</span></p>
+<pre><span>srand(time(NULL));</span></pre>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">F&aacute;jlkezel&eacute;si műveletek</span></strong></span></p>
+<p><span style="font-size: 14pt;">C-ben t&ouml;bbf&eacute;lek&eacute;ppen van lehetős&eacute;g&uuml;nk f&aacute;jlok &iacute;r&aacute;s&aacute;ra &eacute;s olvas&aacute;s&aacute;ra a k&oacute;don bel&uuml;l. Mivel a f&aacute;jlkezel&eacute;s C-ben alap&eacute;rtelmezetten egy absztrakci&oacute;, &iacute;gy nem kell k&ouml;zvetlen&uuml;l az oper&aacute;ci&oacute;s rendszer f&aacute;jlkezelő h&iacute;v&aacute;sait haszn&aacute;lni; egy FILE t&iacute;pus&uacute; mutat&oacute;t alkalmazunk a f&aacute;jlok megnyit&aacute;sakor, amely egy ilyen t&iacute;pus&uacute; strukt&uacute;r&aacute;ra mutat. A strukt&uacute;ra tartalmazza a f&aacute;jl azonos&iacute;t&oacute;j&aacute;t, az aktu&aacute;lis &iacute;r&aacute;si vagy olvas&aacute;si poz&iacute;ci&oacute;j&aacute;t, a f&aacute;jl m&oacute;dj&aacute;t (r, w, a), a buffert &eacute;s a hiba&aacute;llapotot.</span></p>
+<p><span style="font-size: 14pt;">N&eacute;zz&uuml;k &aacute;t a legfontosabb f&aacute;jlkezelő f&uuml;ggv&eacute;nyeket, amikkel tal&aacute;lkozhatunk.</span></p>
+<ul>
+<li><span style="font-size: 14pt;">fopen(): megnyit egy f&aacute;jlt olvas&aacute;sra, &iacute;r&aacute;sra vagy hozz&aacute;fűz&eacute;sre, param&eacute;terei a f&aacute;jl &uacute;tvonala &eacute;s a f&aacute;jl m&oacute;dja. Amennyiben az fopen()-t egy olyan f&aacute;jlra haszn&aacute;ln&aacute;nk &iacute;r&aacute;si m&oacute;dban, amely nem l&eacute;tezik, automatikusan l&eacute;trehozzuk</span></li>
+</ul>
+<pre>FILE* fptr, cptr;<br />fptr = fopen("filename.txt", "r"); // megnyitottunk egy f&aacute;jlt olvas&aacute;sra<br />cptr = fopen("file.txt", "w"); // a file.txt nem l&eacute;tezett kor&aacute;bban, ez&eacute;rt l&eacute;trehoztuk </pre>
+<ul>
+<li><span style="font-size: 14pt;">fsancf(): m&iacute;g a scanf() a standard bemenetről egy form&aacute;zott sz&ouml;veget olvas, az fscanf() ugyanezt teszi a megadott adatfolyamb&oacute;l (f&aacute;jlb&oacute;l). Param&eacute;terk&eacute;nt &aacute;t kell adni a f&aacute;jl pointer&eacute;t, a formatstringet, illetve, ha karaktert&ouml;mbbe olvasunk, akkor a buffert. A * jel az adott mezők eset&eacute;n a figyelmen k&iacute;v&uuml;l hagy&aacute;st jel&ouml;li</span></li>
+</ul>
+<pre>/* <br />   F&aacute;jl tartalma:<br /><br />   N&eacute;v Kor V&aacute;ros<br />   abc 12 Delhi<br />   def 25 Bangkok<br />   ghi 50 Toki&oacute;<br />*/<br /><br />char buffer[100];<br />while (fscanf(ptr, "%*s %*s %s ", buffer) == 1)<br />   printf("%s\n", buffer); // k&ouml;vetkező alakba &iacute;ratunk ki:<br /><br />/*<br />   V&aacute;ros<br />   Delhi<br />   Bangkok<br />   Toki&oacute;<br />*/ </pre>
+<ul>
+<li><span style="font-size: 14pt;">fgets(): a f&aacute;jl tartalm&aacute;t soronk&eacute;nt olvassa, &eacute;s eg&eacute;szen addig olvas a bufferbe, am&iacute;g a f&aacute;jlv&eacute;g karakterig el nem jut, vagy be nem olvasta a megadott sz&aacute;m&uacute; karaktert. Haszn&aacute;lhat&oacute; standard inputon &eacute;s &aacute;llom&aacute;nyok eset&eacute;n is</span></li>
+</ul>
+<pre>char buffer[100];<br />fgets(buffer, sizeof(buffer), fptr);<br />printf("%s", buffer); // ki&iacute;rja a sor tartalm&aacute;t</pre>
+<ul>
+<li><span style="font-size: 14pt;">fgetc(): a f&uuml;ggv&eacute;ny karakterenk&eacute;nt olvassa a f&aacute;jlt, &eacute;s a beolvasott karakter ASCII k&oacute;dj&aacute;t adja vissza</span></li>
+</ul>
+<pre>char c = fgetc(fptr);</pre>
+<ul>
+<li><span style="font-size: 14pt;">fgetw(): sz&aacute;mot olvasunk a f&aacute;jlb&oacute;l</span></li>
+<li><span style="font-size: 14pt;">fread(): az adatfolyamb&oacute;l megadott mennyis&eacute;gű adatot olvas be a mem&oacute;ri&aacute;ba, leggyakrabban bin&aacute;ris vagy sz&ouml;veges adatok blokkszerű olvas&aacute;s&aacute;ra haszn&aacute;lhat&oacute;</span></li>
+</ul>
+<pre>int buffer[5];<br />fread(buffer, sizeof(int), 5, file); // 5 darab intet beolvasunk</pre>
+<ul>
+<li><span style="font-size: 14pt;">fprintf(): hasonl&oacute; a printf() f&uuml;ggv&eacute;nyhez, csak f&aacute;jlokra specifik&aacute;lva, teh&aacute;t nem a standard kimenetre &iacute;runk, hanem az fopen() h&iacute;v&aacute;skor param&eacute;terk&eacute;nt &aacute;tadott f&aacute;jlba</span></li>
+</ul>
+<pre>char string[50];<br />scanf("%s", string);<br />fprintf(cptr, "%s\n", string);</pre>
+<ul>
+<li><span style="font-size: 14pt;">fputs(): az fputs() f&uuml;ggv&eacute;ny k&eacute;t argumentumot v&aacute;r, a karaktert&ouml;mb&ouml;t &eacute;s a f&aacute;jlpointert, &eacute;s egyetlen sort &iacute;r a f&aacute;jlba</span></li>
+</ul>
+<pre>char string[50];<br />fputs(string, cptr);</pre>
+<ul>
+<li><span style="font-size: 14pt;">fputc(): egyetlen karaktert &iacute;runk ki a f&aacute;jlba a megadott f&aacute;jlmutat&oacute;hoz, sikeres &iacute;r&aacute;s eset&eacute;n visszaadjuk a ki&iacute;rt karaktert, hiba eset&eacute;n EOF-ot kapunk</span></li>
+</ul>
+<pre>char string[] = "Hello";<br />fputc(string[2], cptr); // egy l ker&uuml;l a f&aacute;jlba</pre>
+<ul>
+<li><span style="font-size: 14pt;">fputw(): egyetlen sz&aacute;mot &iacute;runk a f&aacute;jlba</span></li>
+<li><span style="font-size: 14pt;">fwrite(): a megadott mennyis&eacute;gű b&aacute;jtot &iacute;r egy bin&aacute;ris f&aacute;jlba</span></li>
+<li><span style="font-size: 14pt;">fclose(): a f&aacute;jlpointert &aacute;tadva a f&aacute;jlt bez&aacute;rjuk, tov&aacute;bbi &iacute;r&aacute;s &eacute;s olvas&aacute;s nem megengedett</span></li>
+</ul>
+<pre>FILE* fptr = fopen("fajl.txt", "r");<br />fclose(fptr);</pre>
+<ul>
+<li><span style="font-size: 14pt;">fseek(): a f&aacute;jl olvas&aacute;s&aacute;hoz &eacute;s &iacute;r&aacute;s&aacute;hoz f&aacute;jlmutat&oacute; &aacute;ll rendelkez&eacute;sre. Az fseek() f&uuml;ggv&eacute;ny feladata a megadott f&aacute;jlpointer adott poz&iacute;ci&oacute;t&oacute;l sz&aacute;m&iacute;tott mozgat&aacute;sa. Első param&eacute;tere a f&aacute;jlmutat&oacute;, m&aacute;sodik az eltol&aacute;s, harmadik a poz&iacute;ci&oacute;</span></li>
+</ul>
+<pre>fseek(fptr, 0, SEEK_END); <br /><br />/*<br />   SEEK_END = f&aacute;jl v&eacute;ge<br />   SEEK_SET = f&aacute;jl eleje<br />   SEEK_CUR = f&aacute;jlmutat&oacute; aktu&aacute;lis poz&iacute;ci&oacute;ja<br />*/</pre>
+<ul>
+<li><span style="font-size: 14pt;">rewind(): a f&aacute;jlpointert a f&aacute;jl elej&eacute;re helyezz&uuml;k</span></li>
+</ul>
+<p><span style="font-size: 14pt;">A megnyitott f&aacute;jlt t&ouml;bbf&eacute;le m&oacute;dban haszn&aacute;lhatjuk, "norm&aacute;l" &eacute;s bin&aacute;ris verzi&oacute;ban is.</span></p>
+<table style="border-collapse: collapse; width: 100%; height: 436px;" border="1">
+<tbody>
+<tr style="height: 53px;">
+<td style="width: 9.9889%; height: 53px;"><span style="font-size: 14pt;">r</span></td>
+<td style="width: 90.1228%; height: 53px;"><span style="font-size: 14pt;">F&aacute;jl megnyit&aacute;sa olvas&aacute;sra. Ha a megnyit&aacute;s sikeres volt, bet&ouml;ltj&uuml;k a mem&oacute;ri&aacute;ba, &eacute;s a f&aacute;jlmutat&oacute;t az első karakter&eacute;re helyezz&uuml;k.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">rb</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">F&aacute;jl megnyit&aacute;sa bin&aacute;ris olvas&aacute;sra.&nbsp;</span></td>
+</tr>
+<tr style="height: 53px;">
+<td style="width: 9.9889%; height: 53px;"><span style="font-size: 14pt;">w</span></td>
+<td style="width: 90.1228%; height: 53px;"><span style="font-size: 14pt;">F&aacute;jl megnyit&aacute;sa sz&ouml;veges &iacute;r&aacute;sra. Ha a f&aacute;jl m&aacute;r kor&aacute;bban l&eacute;tezett, a tartalma fel&uuml;l&iacute;r&aacute;sra ker&uuml;l. Ha nem l&eacute;tezett, egy &uacute;j f&aacute;jl j&ouml;n l&eacute;tre.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">wb</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">F&aacute;jl megnyit&aacute;sa bin&aacute;ris &iacute;r&aacute;sra. Ha a f&aacute;jl m&aacute;r l&eacute;tezett, fel&uuml;l&iacute;r&oacute;dik, ellenkező esetben l&eacute;trej&ouml;n.</span></td>
+</tr>
+<tr style="height: 53px;">
+<td style="width: 9.9889%; height: 53px;"><span style="font-size: 14pt;">a</span></td>
+<td style="width: 90.1228%; height: 53px;"><span style="font-size: 14pt;">Egy f&aacute;jlt hozz&aacute;fűző m&oacute;dban nyitunk meg, vagyis a f&aacute;jlmutat&oacute; a f&aacute;jl utols&oacute; karaktere ut&aacute;n &aacute;ll automatikusan. Ha a f&aacute;jl nem l&eacute;tezik, l&eacute;trehozzuk.</span></td>
+</tr>
+<tr style="height: 53px;">
+<td style="width: 9.9889%; height: 53px;"><span style="font-size: 14pt;">ab</span></td>
+<td style="width: 90.1228%; height: 53px;"><span style="font-size: 14pt;">F&aacute;jl megnyit&aacute;sa bin&aacute;ris hozz&aacute;fűző m&oacute;dban, az adatot a f&aacute;jl v&eacute;g&eacute;hez fűzz&uuml;k hozz&aacute;. Ha nem l&eacute;tezett kor&aacute;bban az &aacute;llom&aacute;ny, megnyit&aacute;ssal egy&uuml;tt l&eacute;trej&ouml;n.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">r+</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">Nemcsak olvas&aacute;s, hanem &iacute;r&aacute;si jog is.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">rb+</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">Nemcsak olvas&aacute;s, hanem &iacute;r&aacute;si jog is bin&aacute;ris &aacute;llom&aacute;ny eset&eacute;n.</span></td>
+</tr>
+<tr style="height: 21px;">
+<td style="width: 9.9889%; height: 21px;"><span style="font-size: 14pt;">w+</span></td>
+<td style="width: 90.1228%; height: 21px;">
+<p><span style="font-size: 14pt;">Nemcsak &iacute;r&aacute;s, hanem olvas&aacute;si jog is.</span></p>
+</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">wb+</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">Nemcsak &iacute;r&aacute;s, hanem olvas&aacute;si jog is bin&aacute;ris &aacute;llom&aacute;ny eset&eacute;n.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">a+</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">Nemcsak hozz&aacute;fűz&eacute;s, hanem olvas&aacute;si jog is.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 9.9889%; height: 29px;"><span style="font-size: 14pt;">ab+</span></td>
+<td style="width: 90.1228%; height: 29px;"><span style="font-size: 14pt;">Nemcsak hozz&aacute;fűz&eacute;s, hanem olvas&aacute;si jog is bin&aacute;ris &aacute;llom&aacute;ny eset&eacute;n.</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 14pt;">Az im&eacute;nt l&aacute;tott verzi&oacute;t magas szintű f&aacute;jlkezel&eacute;snek tekintj&uuml;k. De mit jelent akkor az alacsony szintű f&aacute;jlkezel&eacute;s? Nos, az alacsony szintű f&aacute;jlkezel&eacute;s a C nyelvben a POSIX rendszerh&iacute;v&aacute;sok haszn&aacute;lat&aacute;t jel&ouml;li. Ezek k&ouml;zvetlen kapcsolatban &aacute;llnak a kernel szintű I/O műveletekkel, &iacute;gy nem az stdio.h header &aacute;ltal ny&uacute;jtott f&aacute;jlpointer t&iacute;pussal dolgozik. Az alacsony szint lehetőv&eacute; teszi nagy teljes&iacute;tm&eacute;nyű &eacute;s bin&aacute;ris f&aacute;jlműveletek megval&oacute;s&iacute;t&aacute;s&aacute;t, f&aacute;jlok &eacute;s rendszerszintű jogosults&aacute;gok kezel&eacute;s&eacute;t.</span></p>
+<p><span style="font-size: 14pt;">Az alacsony szintű műveletekhez sz&uuml;ks&eacute;g van a file descrpitorra, amely egy kernel &aacute;ltal biztos&iacute;tott f&aacute;jlhivatkoz&aacute;s. Eg&eacute;sz sz&aacute;m&uacute; &eacute;rt&eacute;ket tartalmaz, amely &eacute;rt&eacute;k&eacute;től f&uuml;ggően jelent&eacute;ssel b&iacute;r:</span></p>
+<ul>
+<li><span style="font-size: 14pt;">0: standard input (stdin)</span></li>
+<li><span style="font-size: 14pt;">1: standard output (stdout)</span></li>
+<li><span style="font-size: 14pt;">2: standard error (stderr)</span></li>
+<li><span style="font-size: 14pt;">2&lt;: program &aacute;ltal megnyitott f&aacute;jlok</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Minden open() f&uuml;ggv&eacute;nyh&iacute;v&aacute;s sor&aacute;n &uacute;j file descriptor keletkezik. Az open() f&uuml;ggv&eacute;nnyel megnyithatunk egy f&aacute;jlt olvas&aacute;sra, &iacute;r&aacute;sra vagy mindkettőre. M&aacute;sodik param&eacute;terben &aacute;tadhat&oacute;, milyen egy&eacute;b m&oacute;dos&iacute;t&aacute;st szeretn&eacute;nk a f&aacute;jlra alkalmazni, &uacute;gynevezett flageket &aacute;ll&iacute;thatunk be. Harmadik param&eacute;terk&eacute;nt a jogosults&aacute;gok adhat&oacute;k &aacute;t. Ha a visszat&eacute;r&eacute;si &eacute;rt&eacute;ke -1, a megnyit&aacute;s sikertelen volt.</span></p>
+<p><span style="font-size: 14pt;">Az open() rendszerh&iacute;v&aacute;s sor&aacute;n POSIX f&aacute;jlmegnyit&aacute;si flageknek nevezz&uuml;k azokat a hozz&aacute;rendelt tulajdons&aacute;gokat, amelyek a m&aacute;sodik param&eacute;ter hely&eacute;n szerepelnek. A flageket f&uuml;ggőleges vonal karakterrel | v&aacute;lasztjuk el egym&aacute;st&oacute;l. Az alap hozz&aacute;f&eacute;r&eacute;si m&oacute;dokb&oacute;l egyet k&ouml;telezően meg kell adni.</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 20.3564%;"><span style="font-size: 14pt;">O_RDONLY</span></td>
+<td style="width: 79.6436%;"><span style="font-size: 14pt;">Csak olvas&aacute;si m&oacute;d.</span></td>
+</tr>
+<tr>
+<td style="width: 20.3564%;"><span style="font-size: 14pt;">O_WRONLY</span></td>
+<td style="width: 79.6436%;"><span style="font-size: 14pt;">Csak &iacute;r&aacute;si m&oacute;d.</span></td>
+</tr>
+<tr>
+<td style="width: 20.3564%;"><span style="font-size: 14pt;">O_RDWR</span></td>
+<td style="width: 79.6436%;"><span style="font-size: 14pt;">Olvas&aacute;si &eacute;s &iacute;r&aacute;si m&oacute;d.</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 14pt;">&Iacute;r&aacute;sn&aacute;l gyakran haszn&aacute;lhat&oacute;k opcion&aacute;lis flagek, amelyek a f&aacute;jlok l&eacute;trehoz&aacute;s&aacute;n&aacute;l, t&ouml;rl&eacute;s&uuml;kkor fordulhatnak elő.</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 20.0525%;"><span style="font-size: 14pt;">O_CREAT</span></td>
+<td style="width: 79.9475%;"><span style="font-size: 14pt;">F&aacute;jl l&eacute;trehoz&aacute;sa, ha m&eacute;g nem l&eacute;tezik (jogosults&aacute;ggal).</span></td>
+</tr>
+<tr>
+<td style="width: 20.0525%;"><span style="font-size: 14pt;">O_EXCL</span></td>
+<td style="width: 79.9475%;"><span style="font-size: 14pt;">O_CREAT-tel egy&uuml;tt haszn&aacute;lva hib&aacute;t jelez, ha a f&aacute;jl m&aacute;r l&eacute;tezik.</span></td>
+</tr>
+<tr>
+<td style="width: 20.0525%;"><span style="font-size: 14pt;">O_TRUNC</span></td>
+<td style="width: 79.9475%;"><span style="font-size: 14pt;">Ha a f&aacute;jl l&eacute;tezik, kit&ouml;rli a tartalm&aacute;t, m&eacute;rete 0 b&aacute;jt lesz.</span></td>
+</tr>
+<tr>
+<td style="width: 20.0525%;"><span style="font-size: 14pt;">O_APPEND</span></td>
+<td style="width: 79.9475%;"><span style="font-size: 14pt;">F&aacute;jl v&eacute;g&eacute;re &iacute;r&aacute;s.</span></td>
+</tr>
+</tbody>
+</table>
+<pre>int file_descriptor_rdonly = open("fajl.txt", O_RDONLY); // csak olvas&aacute;si megnyit&aacute;s<br />int file_descriptor_rdtrunc = open("fajl.txt", O_RDONLY | O_TRUNC); // ha a f&aacute;jl l&eacute;tezik, megnyitjuk olvas&aacute;sra, &eacute;s t&ouml;r&ouml;lj&uuml;k a tartalm&aacute;t<br />int file_descriptor_wrappend = open("fajl.txt", O_WRONLY | O_APPEND); // f&aacute;jl megnyit&aacute;sa &iacute;r&aacute;shoz, f&aacute;jl v&eacute;g&eacute;hez hozz&aacute;fűz&uuml;nk</pre>
+<p><span style="font-size: 14pt;">A read() beolvas&aacute;st v&eacute;gez a f&aacute;jlb&oacute;l a mem&oacute;ri&aacute;ba. Param&eacute;terk&eacute;nt v&aacute;rja a file descriptort, az adat elhelyez&eacute;si c&iacute;m&eacute;t, valamint a beolvasand&oacute; b&aacute;jtok sz&aacute;m&aacute;t. Ha a visszat&eacute;r&eacute;si &eacute;rt&eacute;k 0, sikeresen a f&aacute;jl v&eacute;g&eacute;re &eacute;rt&uuml;nk, k&uuml;l&ouml;nben hib&aacute;t kapunk.</span></p>
+<pre>ssize_t bytes_read; // előjeles eg&eacute;sz t&iacute;pus<br />char buffer[100];<br /><br />int file_descriptor = open("fajl.txt", O_RDONLY);<br /><br />while ((bytes_read = read(file_descriptor, buffer, sizeof(buffer))) &gt; 0) {<br />   write(1, buffer, bytes_read); // standard outputra (1) &iacute;r&aacute;s<br />}</pre>
+<p><span style="font-size: 14pt;">A write() f&uuml;ggv&eacute;ny a mem&oacute;ri&aacute;b&oacute;l &iacute;rja ki az adatot egy megadott f&aacute;jlba. Sz&uuml;ks&eacute;ges a file descriptor, az adat elhelyez&eacute;si c&iacute;me, &eacute;s az &iacute;rand&oacute; b&aacute;jtok sz&aacute;ma. Visszat&eacute;r&eacute;si &eacute;rt&eacute;ke az &iacute;rt b&aacute;jtok sz&aacute;ma. Az al&aacute;bbi p&eacute;lda egy olyan f&aacute;jl&iacute;r&aacute;st val&oacute;s&iacute;t meg, ahol az &iacute;rand&oacute; f&aacute;jl &aacute;r l&eacute;tezik.</span></p>
+<pre>char string[] = "Hello, World!"<br />int file_descriptor = open("fajl.txt", O_WRONLY | O_TRUNC);<br /><br />write(file_descriptor, string, strlen(string)); // a string hossz&aacute;nak megfelelő b&aacute;jtmennyis&eacute;get &iacute;r</pre>
+<p><span style="font-size: 14pt;">A close() bez&aacute;rja a file descriptort, &iacute;gy megsz&uuml;nteti az &iacute;r&aacute;si-olvas&aacute;si lehetős&eacute;get, &eacute;s felszabad&iacute;tja a rendszer lefoglalt erőforr&aacute;sait. A mem&oacute;riasziv&aacute;rg&aacute;s elker&uuml;l&eacute;s&eacute;re haszn&aacute;land&oacute;. A visszat&eacute;r&eacute;si &eacute;rt&eacute;k sikeres lez&aacute;r&aacute;s eset&eacute;n 0, sikertelen eset&eacute;n pedig -1.</span></p>
+<pre>int file_descriptor = open("fajl.txt", O_RDONLY);<br />close(file_descriptor);</pre>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">F&aacute;jl- &eacute;s k&ouml;nyvt&aacute;rtulajdons&aacute;gok</span></strong></span></p>
+<p><span style="font-size: 14pt;">Az open() rendszerh&iacute;v&aacute;s eset&eacute;n mode_t t&iacute;pus&uacute; eg&eacute;sz bitmaskok adhat&oacute;k &aacute;t utols&oacute; argumentumk&eacute;nt. A mode_t egy nem előjeles int t&iacute;pus, egy olyan sz&aacute;m, amely biteken kereszt&uuml;l t&aacute;rolja a jogosults&aacute;gokhoz kapcsol&oacute;d&oacute; inform&aacute;ci&oacute;kat. A mode_t f&aacute;jlt&iacute;pust &eacute;s jogosults&aacute;got (permission biteket) is tartalmaz. Hasonl&oacute;an műk&ouml;dik a Linux jogosults&aacute;gkezel&eacute;s.</span></p>
+<p><span style="font-size: 14pt;">Tulajdonos jogosults&aacute;gok:</span></p>
+<ul>
+<li><span style="font-size: 14pt;">S_IRUSR (0400): olvas&aacute;si jog</span></li>
+<li><span style="font-size: 14pt;">S_IWUSR (0200): &iacute;r&aacute;si jog</span></li>
+<li><span style="font-size: 14pt;">S_IXUSR (0100): futtat&aacute;si jog</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Csoport szintű jogosults&aacute;gok:</span></p>
+<ul>
+<li><span style="font-size: 14pt;">S_IRGRR (0040): olvas&aacute;si jog</span></li>
+<li><span style="font-size: 14pt;">S_IWGRR (0020): &iacute;r&aacute;si jog</span></li>
+<li><span style="font-size: 14pt;">S_IXGRP (0010): futtat&aacute;si jog</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Mindenki m&aacute;s sz&aacute;m&aacute;ra el&eacute;rhető jogosults&aacute;gok:</span></p>
+<ul>
+<li><span style="font-size: 14pt;">S_IROTH (0004): olvas&aacute;si jog</span></li>
+<li><span style="font-size: 14pt;">S_IWOTH (0002): &iacute;r&aacute;si jog</span></li>
+<li><span style="font-size: 14pt;">S_IXOTH (0001): futtat&aacute;si jog</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Teh&aacute;t abban az esetben, ha 644 jogosults&aacute;got szeretn&eacute;nk be&aacute;ll&iacute;tani, akkor C-ben az S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH jogosults&aacute;gok sz&uuml;ks&eacute;gesek.</span></p>
+<p><span style="font-size: 14pt;">Bevezet&uuml;nk egy &uacute;j headert, a dirent.h header f&aacute;jlt, mely seg&iacute;ts&eacute;g&eacute;vel k&ouml;nyvt&aacute;rbej&aacute;r&aacute;si feladatokat, list&aacute;z&aacute;st, megjel&ouml;l&eacute;st v&eacute;gezhet&uuml;nk. A k&uuml;l&ouml;nb&ouml;ző műveletekhez a DIR strukt&uacute;ra kapcsol&oacute;dik, mely tartalm&aacute;t nem sz&uuml;ks&eacute;ges ismerni. Az egyes, lejjebb taglalt f&uuml;ggv&eacute;nyh&iacute;v&aacute;sok eredm&eacute;nyek&eacute;ppen egy DIR pointer t&iacute;pust kapunk, amely egy, a f&aacute;jlrendszerben megtal&aacute;lhat&oacute; k&ouml;nyvt&aacute;rra mutat.</span></p>
+<p><span style="font-size: 14pt;">Az opendir f&uuml;ggv&eacute;ny egy k&ouml;nyvt&aacute;rat nyit meg. Param&eacute;terben &aacute;tadjuk a k&ouml;nyvt&aacute;r el&eacute;r&eacute;si &uacute;tj&aacute;t, eredm&eacute;nye egy DIR pointer. Ha null &eacute;rt&eacute;kkel t&eacute;r vissza, a k&ouml;nyvt&aacute;r megnyit&aacute;sa nem siker&uuml;lt a mappa vagy a megfelelő jogosults&aacute;gok hi&aacute;nya miatt.</span></p>
+<pre>DIR* directory = opendir("/home/user"); // /home/user k&ouml;nyvt&aacute;r megnyit&aacute;sa</pre>
+<p><span style="font-size: 14pt;">A readdir f&uuml;ggv&eacute;ny lehetőv&eacute; teszi a megnyitott k&ouml;nyvt&aacute;r elemeinek kiolvas&aacute;s&aacute;t egyes&eacute;vel. Minden h&iacute;v&aacute;s sor&aacute;n a k&ouml;vetkező f&aacute;jlra vagy k&ouml;nyvt&aacute;rra l&eacute;p, &eacute;s ha nincs t&ouml;bb olvashat&oacute; &aacute;llom&aacute;ny, nullal t&eacute;r vissza. Alap&eacute;rtelmezetten a visszat&eacute;r&eacute;si &eacute;rt&eacute;ke egy dirent strukt&uacute;ra, amely az &aacute;llom&aacute;nyr&oacute;l tartalmaz inform&aacute;ci&oacute;kat.&nbsp;</span></p>
+<pre>struct dirent {<br />   ino_t d_ino; // inode sz&aacute;m<br />   off_t d_off; // eltol&aacute;s a k&ouml;vetkező direntig<br />   unsigned short d_reclen; // aktu&aacute;lis rekord hossza<br />   unsigned char d_type; // f&aacute;jlt&iacute;pus<br />   char d_name[256]; // f&aacute;jln&eacute;v<br />}</pre>
+<p><span style="font-size: 14pt;">Az al&aacute;bbi strukt&uacute;r&aacute;ban sz&aacute;mos &uacute;j t&iacute;pus &eacute;s fogalom tal&aacute;lhat&oacute;. Az ino_t a t&iacute;pus defin&iacute;ci&oacute;ja a sys/types.h headerben tal&aacute;lhat&oacute;, &eacute;s b&aacute;r rendszerf&uuml;ggő, de leggyakrabban unsigned long vagy uint64_t t&iacute;pus&uacute;. A d_ino tag a f&aacute;jl belső azonos&iacute;t&oacute;j&aacute;t jel&ouml;li a f&aacute;jlrendszerben, &eacute;s tartalmazza a jogosults&aacute;gokat, tulajdonosokat, m&eacute;retet stb. Fontos, hogy a f&aacute;jln&eacute;v nem egyezik meg az inode-dal, a k&ouml;nyvt&aacute;r k&ouml;ti &ouml;ssze a nevet &eacute;s az inode sz&aacute;mot.</span></p>
+<p><span style="font-size: 14pt;">Az off_t t&iacute;pus &aacute;ltal&aacute;ban long vagy int64_t reprezent&aacute;ci&oacute;j&uacute;, a f&aacute;jl-eltol&aacute;sokat jel&ouml;li. Ez az eltol&aacute;s arra val&oacute;, hogy a k&ouml;vetkező dirent poz&iacute;ci&oacute;j&aacute;t megkapjuk. Ritk&aacute;n haszn&aacute;ljuk manu&aacute;lisan, a rendszer belső műk&ouml;d&eacute;s&eacute;hez sz&uuml;ks&eacute;ges. A d_reclen a rekord hossz&aacute;t jel&ouml;li, amely a dirent mem&oacute;ri&aacute;ban elfoglalt m&eacute;rete. A d_type az &aacute;llom&aacute;ny t&iacute;pus&aacute;t jelenti. Az &aacute;llom&aacute;ny t&iacute;pusokat a k&ouml;vetkező &eacute;rt&eacute;kekkel haszn&aacute;lhatjuk:</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_REG</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Norm&aacute;l f&aacute;jl</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_DIR</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">K&ouml;nyvt&aacute;r</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_LNK</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Szimbolikus link</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_FIFO</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Neves&iacute;tett pipe</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_SOCK</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Socket</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_CHR</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Karakteres eszk&ouml;z</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_BLK</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Blokkos eszk&ouml;z</span></td>
+</tr>
+<tr>
+<td style="width: 21.0998%;"><span style="font-size: 14pt;">DT_UNKNOWN</span></td>
+<td style="width: 78.9002%;"><span style="font-size: 14pt;">Nem ismert</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 14pt;">A stat strukt&uacute;ra egy olyan adatstrukt&uacute;ra, amely a f&aacute;jlrendszerben t&aacute;rolt metaadatatokat adja vissza. A hasonl&oacute; nevű stat() f&uuml;ggv&eacute;ny seg&iacute;ts&eacute;g&eacute;vel t&ouml;lthető ki, haszn&aacute;lata pedig &aacute;ltal&aacute;ban akkor relev&aacute;ns, ha megadott &aacute;llom&aacute;nyokr&oacute;l szeretn&eacute;nk bővebb inform&aacute;ci&oacute;kat kinyerni. A stat mezőinek nagy r&eacute;sz&eacute;t az inode-b&oacute;l kapja, &iacute;gy p&eacute;ld&aacute;ul az inode sz&aacute;m, f&aacute;jln&eacute;v megegyezik.</span></p>
+<pre>struct stat {<br />   dev_t st_dev; // a f&aacute;jlt tartalmaz&oacute; eszk&ouml;z azonos&iacute;t&oacute;ja<br />   ino_t st_ino; // inode sz&aacute;m<br />   mode_t st_mode; // v&eacute;delem<br />   nlink_t st_nlink; // hard linkek sz&aacute;ma<br />   uid_t st_uid; // tulajdonos azonos&iacute;t&oacute;ja<br />   gid_t st_gid; // csoport azonos&iacute;t&oacute;ja<br />   off_t st_size; // b&aacute;jtokban m&eacute;rt teljes m&eacute;ret<br />   blksize_t st_blksize; // f&aacute;jlrendszer blokkm&eacute;rete<br />   blkcnt_t st_blocks; // 512 b&aacute;jtnyi lefoglalt ter&uuml;letek sz&aacute;ma<br />   time_t st_atime; // utols&oacute; hozz&aacute;f&eacute;r&eacute;s ideje<br />   time_t st_mtime; // utols&oacute; m&oacute;dos&iacute;t&aacute;s ideje<br />   time_t st_ctime; // utols&oacute; st&aacute;tuszm&oacute;dos&iacute;t&aacute;s ideje<br />}</pre>
+<p><span style="font-size: 14pt;">Minden egyes t&iacute;pus (_t) egy absztrakci&oacute;, amely a 32/64 bites rendszereken műk&ouml;d&eacute;st val&oacute;s&iacute;tja meg. A dev_t eszk&ouml;zazonos&iacute;t&oacute; t&iacute;pus olyan numerikus t&iacute;pus, amely logikailag egy major (driver) &eacute;s egy minor (konkr&eacute;t eszk&ouml;z) sz&aacute;mb&oacute;l &eacute;p&uuml;l fel. Ezekkel defini&aacute;lhat&oacute; az az eszk&ouml;z, amely az &aacute;llom&aacute;nyt tartalmazza. Az st_ino inode sz&aacute;m megegyezik a dirent strukt&uacute;r&aacute;ban l&aacute;tott d_ino sz&aacute;mmal. A mode_t t&iacute;pus&uacute; st_mode egy integr&aacute;lt bitmaszk, amely f&aacute;jlt&iacute;pust, speci&aacute;lis biteket &eacute;s jogosults&aacute;gokat tartalmaz.</span></p>
+<ul>
+<li><span style="font-size: 14pt;">F&aacute;jlt&iacute;pus bitek: S_IFREG, S_IFDIR, S_IFLNK, S_IFCHR, S_IFBLK, S_IFIFO, S_IFSOCK</span></li>
+<li><span style="font-size: 14pt;">Jogosults&aacute;g bitek: S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IWGRP, S_IXGRP, S_IROTH, S_IWOTH, S_IXOTH</span></li>
+<li><span style="font-size: 14pt;">Speci&aacute;lis bitek: S_ISUID (tulajdonos futtat&aacute;s), S_ISGID (csoport futtat&aacute;s), S_ISVTX (sticky bit)</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Az st_nlink egy kis eg&eacute;sz t&iacute;pus, amely a hard linkeket sz&aacute;molja. A hard linkek Unix f&aacute;jlrendszeren egy olyan kapcsolatot biztos&iacute;tanak az eredeti f&aacute;jl &eacute;s a link k&ouml;z&ouml;tt, hogy egy m&aacute;sik n&eacute;vvel hivatkozhatunk ugyanarra az elemre. Mivel a kernelben csak sz&aacute;mok tal&aacute;lhat&oacute;ak, ez&eacute;rt numerikus azonos&iacute;t&oacute; a felhaszn&aacute;l&oacute; azonos&iacute;t&oacute;ja, az st_uid, valamint a csoport azonos&iacute;t&oacute;ja, az st_gid. Legt&ouml;bbsz&ouml;r uint32_t t&iacute;pus&uacute;ak. Az st_size a f&aacute;jlpoz&iacute;ci&oacute;t &iacute;rja le, előjeles integer t&iacute;pusk&eacute;nt, amely az lseek() f&uuml;ggv&eacute;ny visszat&eacute;r&eacute;si &eacute;rt&eacute;ke. Az st_blksize egy I/O optimaliz&aacute;ci&oacute;s egys&eacute;g, a kernel &aacute;ltal aj&aacute;nlott buffer m&eacute;ret, a blkcnt_t pedig a lefoglalt blokkok sz&aacute;ma. Az utols&oacute; h&aacute;rom tag mindegyike egy-egy időabsztrakci&oacute;t, a time_t-t haszn&aacute;lja.</span></p>
+<p><span style="font-size: 14pt;">A f&aacute;jlrendszerben az egyes felhaszn&aacute;l&oacute;khoz jelszavak tartoznak. A passwd strukt&uacute;ra a felhaszn&aacute;l&oacute;i fi&oacute;kok le&iacute;r&aacute;s&aacute;ra szolg&aacute;l, a felhaszn&aacute;l&oacute;k metaadatait t&aacute;rolja.&nbsp; Tartalmazza a felhaszn&aacute;l&oacute;nevet karakterek pointerjek&eacute;nt, a felhaszn&aacute;l&oacute; azonos&iacute;t&oacute;j&aacute;t &eacute;s csoportj&aacute;t, a home k&ouml;nyvt&aacute;r&aacute;t, valamint azt a parancs&eacute;rtelmezőt (shell), amely a bel&eacute;p&eacute;skor elindult.</span></p>
+<pre>struct passwd {<br />   char *pw_name; // felhaszn&aacute;l&oacute;n&eacute;v<br />   uid_t pw_uid; // felhaszn&aacute;l&oacute; azonos&iacute;t&oacute;ja<br />   gid_t pw_gid; // felhaszn&aacute;l&oacute; csoportja<br />   char *pw_dir; // home k&ouml;nyvt&aacute;r<br />   char *pw_shell; // bejelentkez&eacute;si shell<br />}</pre>
+<p>&nbsp;</p>
+<p><span style="text-decoration: underline; background-color: #c2e0f4;"><strong><span style="font-size: 14pt; background-color: #c2e0f4;">&Oacute;rai feladatok:</span></strong></span></p>
+<p><span style="font-size: 14pt;">K&eacute;rj&uuml;nk be a felhaszn&aacute;l&oacute;t&oacute;l egy pozit&iacute;v eg&eacute;sz sz&aacute;mot. Foglaljunk le dinamikusan egy int t&iacute;pus&uacute; t&ouml;mb&ouml;t n elemsz&aacute;mmal, &eacute;s t&ouml;lts&uuml;k fel az elemeket 1-20 k&ouml;z&ouml;tti sz&aacute;mokkal, amelyeket a termin&aacute;lr&oacute;l k&eacute;r&uuml;nk be! &Iacute;rassuk ki az első olyan &eacute;rt&eacute;ket, amely 15-n&eacute;l nagyobb! A haszn&aacute;lat ut&aacute;n szabad&iacute;tsuk fel a mem&oacute;ri&aacute;t!</span></p>
+<p><span style="font-size: 14pt;">Az előző programot m&oacute;dos&iacute;tsuk &uacute;gy, hogy a t&ouml;mb &uacute;j m&eacute;rete legyen m, &eacute;s realloc() seg&iacute;ts&eacute;g&eacute;vel v&aacute;ltoztassuk meg a t&ouml;mb&ouml;t! Az esetleges &uacute;j elemek -1 &eacute;rt&eacute;ket kapjanak, &eacute;s ker&uuml;ljenek az elemek ki&iacute;rat&aacute;sra!</span></p>
+<p><span style="font-size: 14pt;">K&eacute;sz&iacute;ts&uuml;nk egy 10 elemű dinamikus t&ouml;mb&ouml;t, amelyet 0-100 k&ouml;z&ouml;tti v&eacute;letlen sz&aacute;mokkal t&ouml;lt&uuml;nk fel! M&eacute;rj&uuml;k le, a program indul&aacute;sa &eacute;s a sz&aacute;mok ki&iacute;rat&aacute;sa k&ouml;z&ouml;tt mennyi idő telik el!</span></p>
+<p><span style="font-size: 14pt;">K&eacute;rj&uuml;k le az aktu&aacute;lis időt! Ments&uuml;k el ezt egy f&aacute;jlba!</span></p>
+<p><span style="font-size: 14pt;">Olvassunk be egy f&aacute;jlt, aminek el&eacute;r&eacute;si &uacute;tj&aacute;t parancssori argumentumk&eacute;nt adunk meg! Sz&aacute;moljuk meg a benne tal&aacute;lhat&oacute; karakterek &eacute;s sorok darabsz&aacute;m&aacute;t, majd &iacute;rjuk ki az eredm&eacute;nyt!</span></p>
+<p><span style="font-size: 14pt;">Egy struktur&aacute;lt adatf&aacute;jlb&oacute;l, amely neveket, &eacute;letkorokat &eacute;s v&aacute;rosokat tartalmaz, csak azokat a sorokat &iacute;rjuk ki (n&eacute;v, v&aacute;ros), ahol az &eacute;letkor 20 &eacute;s 30 k&ouml;z&ouml;tt tal&aacute;lhat&oacute;!</span></p>
+<p><span style="font-size: 14pt;">K&eacute;sz&iacute;ts&uuml;nk egy alacsony szintű f&aacute;jlm&aacute;sol&oacute;t, amely egy forr&aacute;sf&aacute;jlb&oacute;l &aacute;tm&aacute;solja a p&aacute;ros sorokat a c&eacute;lf&aacute;jlba! A forr&aacute;s &eacute;s c&eacute;lf&aacute;jl el&eacute;r&eacute;si &uacute;tvonal&aacute;t parancssori param&eacute;terk&eacute;nt adjuk &aacute;t!</span></p>
+<p><span style="font-size: 14pt;">Nyissunk meg egy k&ouml;nyvt&aacute;rat, list&aacute;zzuk ki az elemeit, &eacute;s minden elem &iacute;rjuk ki, hogy [FILE], [DIR] vagy [LINK] t&iacute;pus&uacute;! H&iacute;vjuk meg minden f&aacute;jlra a stat() f&uuml;ggv&eacute;nyt, &eacute;s &iacute;rassuk ki a m&eacute;ret&eacute;t b&aacute;jtban, jogosults&aacute;gait &eacute;s inode sz&aacute;m&aacute;t!</span></p>
