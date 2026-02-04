@@ -1,0 +1,100 @@
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 18pt;">Folyamatkezel&eacute;s</span></strong></span></p>
+<p><span style="font-size: 14pt;">A Linux oper&aacute;ci&oacute;s rendszer feladata t&ouml;bbek k&ouml;z&ouml;tt, hogy egy t&ouml;bbfeladatos, multitasking k&ouml;rnyezetet biztos&iacute;tson a felhaszn&aacute;l&oacute;k sz&aacute;m&aacute;ra, ahol egyszerre t&ouml;bb program (b&aacute;jthalmaz a mem&oacute;ri&aacute;ban) futhat egyidejűleg. A folyamatkezel&eacute;s az oper&aacute;ci&oacute;s rendszer egyik legfontosabb r&eacute;sze: az egyes folyamatok l&eacute;trehoz&aacute;sa, &uuml;temez&eacute;se, &aacute;llapotkezel&eacute;se, kiiktat&aacute;sa &eacute;s az erőforr&aacute;s-eloszt&aacute;s kezel&eacute;se mind-mind a rendszer l&eacute;nyeges tulajdons&aacute;gait k&eacute;pezik.&nbsp;</span></p>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">Folyamatok</span></strong></span></p>
+<p><span style="font-size: 14pt;">A folyamat egy v&eacute;grehajt&aacute;s alatt &aacute;ll&oacute; program a mem&oacute;ri&aacute;ban &ndash; hivatkozhatunk r&aacute; egy akt&iacute;v entit&aacute;sk&eacute;nt, amely a passz&iacute;v programb&oacute;l k&eacute;sz&uuml;l. Folyamatok j&ouml;hetnek l&eacute;tre automatikusan, de hozhatunk l&eacute;tre mi is. Egy v&eacute;letlenszerűen kiv&aacute;lasztott C program eset&eacute;n a ford&iacute;t&aacute;s sor&aacute;n futtathat&oacute; &aacute;llom&aacute;nyt kapunk, amelyet a ./ karakterek seg&iacute;ts&eacute;g&eacute;vel futtatunk, &iacute;gy egy folyamatot k&eacute;sz&iacute;t&uuml;nk.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">A folyamat k&uuml;l&ouml;nb&ouml;ző r&eacute;szekre tagol&oacute;dik a mem&oacute;ri&aacute;ban, &eacute;s mindegyik m&aacute;s-m&aacute;s c&eacute;lra szolg&aacute;l.&nbsp;</span></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://canvas.instructure.com/courses/13939147/files/331420107/preview" alt="Process_look.png" data-api-endpoint="https://canvas.instructure.com/api/v1/courses/13939147/files/331420107" data-api-returntype="File" /></p>
+<p><span style="font-size: 14pt;">A sz&ouml;vegr&eacute;sz t&aacute;rolja egy sz&ouml;veg- vagy k&oacute;dszegmens v&eacute;grehajtand&oacute; utas&iacute;t&aacute;sait, amely gyakran csak olvashat&oacute; r&eacute;szk&eacute;nt funkcion&aacute;l. A verem ideiglenes adatokat tartalmaz, f&uuml;ggv&eacute;nyparam&eacute;tereket, visszat&eacute;r&eacute;si c&iacute;meket, lok&aacute;lis v&aacute;ltoz&oacute;kat. Az adatszakasz a glob&aacute;lis v&aacute;ltoz&oacute;kat tartalmazza, m&iacute;g a heapen a folyamat fut&aacute;si ideje alatt dinamikusan lefoglalt mem&oacute;ria l&aacute;that&oacute;.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">Egy folyamat sz&aacute;mos attrib&uacute;tummal rendelkezik, amelyek seg&iacute;tik az oper&aacute;ci&oacute;s rendszert a kezel&eacute;s&uuml;kben &eacute;s az ellenőrz&eacute;s&uuml;kben. Az attrib&uacute;tumok egy &uacute;gynevezett Process Cotrol Block (PCB) adatstrukt&uacute;r&aacute;ban t&aacute;rolhat&oacute;k. &Aacute;llapot&aacute;tmenetek sor&aacute;n az oper&aacute;ci&oacute;s rendszer friss&iacute;ti a PCB-t a legfrissebb v&eacute;grehajt&aacute;si adatokkal. A folyamatt&aacute;bla PCB-k t&ouml;mbje, amely az &ouml;sszes akt&iacute;v folyamat adatait t&aacute;rolja. A PCB fel&eacute;p&iacute;t&eacute;se:</span></p>
+<ul>
+<li><span style="font-size: 14pt;">Folyamatazonos&iacute;t&oacute; (PID): egy egyedi azonos&iacute;t&oacute;, amellyel minden oper&aacute;ci&oacute;s rendszerbeli folyamat rendelkezik.</span></li>
+<li><span style="font-size: 14pt;">Sz&uuml;lőazonos&iacute;t&oacute; (PPID): a sz&uuml;lőfolyamat azonos&iacute;t&oacute;ja.</span></li>
+<li><span style="font-size: 14pt;">Felhaszn&aacute;l&oacute;i jogosults&aacute;gok (UID, GID).</span></li>
+<li><span style="font-size: 14pt;">&Aacute;llapot: a folyamat aktu&aacute;lis &aacute;llapot&aacute;t mutatja. Leggyakoribb &aacute;llapotok: fut&oacute;, fut&aacute;sra k&eacute;sz, blokkolt.</span></li>
+<li><span style="font-size: 14pt;">CPU &aacute;llapot: kontextusv&aacute;lt&aacute;shoz sz&uuml;ks&eacute;ges adatokat tartalmaz, mint a CPU regisztereket, stack pointert, flageket &eacute;s a program countert (amely az utas&iacute;t&aacute;smutat&oacute;).</span></li>
+<li><span style="font-size: 14pt;">&Uuml;temez&eacute;si inform&aacute;ci&oacute;k: az adott folyamat priorit&aacute;s&aacute;t, időkv&oacute;t&aacute;j&aacute;t (mennyi CPU időszeletet kaphat), valamint a sorok mutat&oacute;it tartalmazza.</span></li>
+<li><span style="font-size: 14pt;">Mem&oacute;riakezel&eacute;si adatok.</span></li>
+<li><span style="font-size: 14pt;">I/O erőforr&aacute;sok: mag&aacute;ba foglalja a megnyitott f&aacute;jlok list&aacute;j&aacute;t, az I/O eszk&ouml;z&ouml;k &aacute;llapot&aacute;t, lockokat &eacute;s szemaforokat.</span></li>
+<li><span style="font-size: 14pt;">K&ouml;nyvel&eacute;si adatok.</span></li>
+</ul>
+<p><span style="font-size: 14pt;">Az al&aacute;bbi &aacute;bra megmutatja a folyamat lehets&eacute;ges &aacute;llapotai k&ouml;z&ouml;tti kapcsolatokat.</span></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://canvas.instructure.com/courses/13939147/files/333252497/preview" alt="process-state-in-os.jpg" data-api-endpoint="https://canvas.instructure.com/api/v1/courses/13939147/files/333252497" data-api-returntype="File" /></p>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt;">Folyamatok l&eacute;trehoz&aacute;sa</span></strong></span></p>
+<p><span style="font-size: 14pt;">Tanulm&aacute;nyaink sor&aacute;n C-ben programozunk, ahol a folyamatok l&eacute;trehoz&aacute;sa egy rendszerh&iacute;v&aacute;s seg&iacute;ts&eacute;g&eacute;vel, a Linuxban is haszn&aacute;lt fork()-kal t&ouml;rt&eacute;nik. A fork() megh&iacute;v&aacute;sakor az oper&aacute;ci&oacute;s rendszer l&eacute;trehoz egy &uacute;j processzt, ezzel szinte t&ouml;k&eacute;letesen lem&aacute;solva a sz&uuml;lőfolyamatot. A gyerekfolyamat saj&aacute;t azonos&iacute;t&oacute;t (PID) kap, a sz&uuml;lőazonos&iacute;t&oacute;ja (PPID) pedig az ősfolyamat ID-j&aacute;t kapja meg.</span></p>
+<p><span style="font-size: 14pt;">A C-beli f&uuml;ggv&eacute;ny nem rendelkezik param&eacute;terekkel. Visszat&eacute;r&eacute;si &eacute;rt&eacute;ke egy pid_t t&iacute;pus&uacute; eg&eacute;sz sz&aacute;m, amely a sz&uuml;lő-gyerek folyamatok kapcsolat&aacute;t jelzi. Negat&iacute;v &eacute;rt&eacute;k, legt&ouml;bbsz&ouml;r -1 eset&eacute;n hib&aacute;t kapunk, &iacute;gy a gyerekfolyamat l&eacute;trehoz&aacute;sa nem siker&uuml;lt. Ha 0-val t&eacute;r vissza, a gyerekfolyamatot siker&uuml;lt l&eacute;trehozni. Pozit&iacute;v &eacute;rt&eacute;k eset&eacute;n a k&oacute;d a sz&uuml;lőfolyamatban fut.</span></p>
+<p><span style="font-size: 14pt;">Szintaxisa:</span></p>
+<pre>pid_t child = fork();</pre>
+<p><span style="font-size: 14pt;">Tegy&uuml;k fel, hogy szeretn&eacute;nk egy alap programot &iacute;rni, amiben k&eacute;tszer szeretn&eacute;nk ki&iacute;ratni egym&aacute;s ut&aacute;n egy bizonyos sz&ouml;veget. Előzetes tanulm&aacute;nyaink sor&aacute;n csak a szekvencia vagy a ciklusok &aacute;lltak rendelkez&eacute;s&uuml;nkre. Most, a fork() haszn&aacute;lat&aacute;val is meg tudjuk ezt tenni, amelyet az &lt;unistd.h&gt; headerből kapunk. Az al&aacute;bbi programban a main() f&uuml;ggv&eacute;ny legelej&eacute;n kl&oacute;noz&aacute;st hajtunk v&eacute;gre &ndash; ami azt jelenti, hogy az elindul&oacute; programot, mint folyamatot megkettőzz&uuml;k. &Iacute;gy a termin&aacute;lban egym&aacute;s ut&aacute;n k&eacute;tszer fog megjelenni a ki&iacute;rand&oacute; sz&ouml;veg, mivel kettő folyamattal dolgozunk.</span></p>
+<pre>#include &lt;stdio.h&gt;<br />#include &lt;sys/types.h&gt;<br />#include &lt;unistd.h&gt;<br /><br />int main() {<br />   fork();<br /><br />   printf("Hello World!\n");<br /><br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">Az eredm&eacute;ny:</span></p>
+<pre>Hello World!<br />Hello World!</pre>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://canvas.instructure.com/courses/13939147/files/333256283/preview" alt="output-fork-function.webp" data-api-endpoint="https://canvas.instructure.com/api/v1/courses/13939147/files/333256283" data-api-returntype="File" /></p>
+<p><span style="font-size: 14pt;">Mivel minden esetben duplik&aacute;ci&oacute; t&ouml;rt&eacute;nik, ez&eacute;rt a 2 n-szeres hatv&aacute;nyak&eacute;nt hivatkozhatunk a folyamatok darabsz&aacute;m&aacute;ra, ahol n a fork() rendszerh&iacute;v&aacute;sok sz&aacute;m&aacute;t jel&ouml;li. Ha az előbbi programunkban nem egyetlen fork(), hanem h&aacute;rom kap helyet, akkor a kimeneten 8 darab "Hello World!" ki&iacute;r&aacute;s fog szerepelni.</span></p>
+<p><span style="font-size: 14pt;">A forkol&aacute;st gyakran hibakezel&eacute;s k&ouml;veti. Egy h&aacute;rom&aacute;g&uacute; if-ben c&eacute;lszerű megvizsg&aacute;lni a kapott visszat&eacute;r&eacute;si &eacute;rt&eacute;ket, &iacute;gy a hib&aacute;k &eacute;s a sz&uuml;lő-gyerek viszontags&aacute;gok felder&iacute;thetők.</span></p>
+<pre>pid_t child = fork();<br /><br />if (child &lt; 0) {<br />   perror("The fork calling was not successful\n"); // &lt;errno.h&gt;-ban tal&aacute;lhat&oacute; hibakezel&eacute;s<br />   exit(1); // 1-es hibak&oacute;ddal kil&eacute;p&uuml;nk<br />} else if (child &gt; 0) {<br />   printf("Parent process is running\n");<br />} else {<br />   printf("Child process is running\n");<br />}</pre>
+<p><span style="font-size: 14pt;">A folyamatkezel&eacute;s t&eacute;mak&ouml;r&eacute;ben sz&aacute;mos olyan f&uuml;ggv&eacute;ny &aacute;ll rendelkez&eacute;s&uuml;nkre, amellyel megk&ouml;nny&iacute;thetj&uuml;k a munk&aacute;nkat.&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 14pt;">getpid(): lek&eacute;rj&uuml;k az aktu&aacute;lis folyamat azonos&iacute;t&oacute;j&aacute;t.</span></li>
+</ul>
+<pre>pid_t pid = fork();<br />printf("Process ID: %d\n", getpid());</pre>
+<ul>
+<li><span style="font-size: 14pt;">getppid(): visszaadja az aktu&aacute;lis folyamat sz&uuml;lőfolyamat&aacute;nak azonos&iacute;t&oacute;j&aacute;t, amennyiben a folyamatot fork() seg&iacute;ts&eacute;g&eacute;vel hoztuk l&eacute;tre. Ellenkező esetben 1-gyel t&eacute;r vissza, amely az init processz azonos&iacute;t&oacute;ja.</span></li>
+</ul>
+<pre>pid_t pid = fork();<br />printf("Parent Process ID: %d\n", getppid());</pre>
+<ul>
+<li><span style="font-size: 14pt;">wait(int *status): sz&uuml;lőfolyamatn&aacute;l haszn&aacute;ljuk, hogy v&aacute;rakozzon, am&iacute;g az egyik gyere be nem fejezi a fut&aacute;st. Nincs megszabva, melyik gyerekfolyamat termin&aacute;l&aacute;s&aacute;ig v&aacute;rakozik. A termin&aacute;l&oacute; gyerek azonos&iacute;t&oacute;j&aacute;t adja vissza. Ha nincs gyerek, azonnal -1 &eacute;rt&eacute;ket dob. Param&eacute;terk&eacute;nt st&aacute;tuszt kap, amely a kil&eacute;p&eacute;si inform&aacute;ci&oacute;kat tartalmazza.</span></li>
+</ul>
+<pre>pid_t pid = fork();<br /><br />if (pid == 0) {<br />   printf("Child is running\n");<br />   return 5<br />}<br /><br />int status;<br />wait(&amp;status);<br /><br />printf("Child finished\n");<br />return 0;</pre>
+<ul>
+<li><span style="font-size: 14pt;">waitpid(pid_t pid, int *status, int options): sz&uuml;lőfolyamatn&aacute;l haszn&aacute;ljuk, de param&eacute;terk&eacute;nt &aacute;t kell adni, melyik gyerekre vonatkoz&oacute;an kell v&aacute;rakoznia. Ha a pid nagyobb 0-n&aacute;l, konkr&eacute;t azonos&iacute;t&oacute;ra v&aacute;r. Ha -1, akkor b&aacute;rmely gyerekfolyamat befejez&eacute;s&eacute;n&eacute;l elindul. A status tartalmazza a kil&eacute;p&eacute;si inform&aacute;ci&oacute;kat. Az options argumentum flageket hat&aacute;roz meg, amelyekkel a sz&uuml;lő-gyerek v&aacute;rakoz&aacute;si folyamat szabhat&oacute; meg.</span></li>
+</ul>
+<pre>pid_t pid = fork();<br /><br />if (pid == 0) {<br />   sleep(2);<br />   return 3;<br />}<br /><br />int status;<br />waitpid(pid, &amp;status, 0);<br />printf("Child finished\n");<br /><br />return 0;</pre>
+<ul>
+<li><span style="font-size: 14pt;">exec() f&uuml;ggv&eacute;nycsal&aacute;d: lecser&eacute;lik az aktu&aacute;lis folyamat programj&aacute;t egy m&aacute;sik programra. A folyamatazonos&iacute;t&oacute;t meghagyj&aacute;k, de a k&oacute;dot, a vermet &eacute;s a heapet megv&aacute;ltoztatj&aacute;k. Ebbe a csal&aacute;dba tartozik az execl(), execv(), execlp(), execvp(), execve().</span></li>
+</ul>
+<pre>pid_t pid = fork();<br /><br />if (pid == 0) {<br />   execl("/bin/ls", "ls", "-l", NULL); <br />   // ahol: execl("program_el&eacute;r&eacute;si_&uacute;t", "program_neve", "program_kapcsol&oacute;", "lista_v&eacute;ge");<br />} else {<br />   waitpid(pid, NULL, 0);<br />}</pre>
+<ul>
+<li><span style="font-size: 14pt;">signal(int signum, *handler): alapjel kezelő a f&uuml;ggv&eacute;ny, amely egy megadott szign&aacute;l eset&eacute;n valamilyen esem&eacute;nyt h&uacute;z maga ut&aacute;n.&nbsp;&nbsp;</span></li>
+<li><span style="font-size: 14pt;">sleep(int seconds): meg&aacute;ll&iacute;tja az aktu&aacute;lis folyamat fut&aacute;s&aacute;t a megadott sz&aacute;m&uacute; m&aacute;sodperc erej&eacute;ig. Ezalatt a folyamat nem csin&aacute;l semmit, de m&aacute;s folyamatok kaphatnak a CPU-t&oacute;l időszeletet. Fel&eacute;breszthető egy jellel.</span></li>
+<li><span style="font-size: 14pt;">pause(): meg&aacute;ll&iacute;tja a folyamat fut&aacute;s&aacute;t v&eacute;gtelen időre, am&iacute;g egy jel nem &eacute;rkezik. Jel hi&aacute;ny&aacute;ban blokkolva marad.</span></li>
+</ul>
+<pre>void handler(int signal) {<br />   printf("Signal received\n");<br />}<br /><br />int main() {<br />   signal(SIGINT, handler); // Ctrl+C kezel&eacute;se<br />   printf("Waiting for signal...\n");<br /><br />   pause();<br /><br />   printf("Finished!\n");<br />   return 0;<br />}</pre>
+<p><span style="font-size: 14pt;">A st&aacute;tuszra vonatkoz&oacute; makr&oacute;kat egy t&aacute;bl&aacute;zatban &ouml;sszefoglalhatjuk funkci&oacute;ik szerint. Ezek a makr&oacute;k a &lt;sys/wait.h&gt; headerben tal&aacute;lhat&oacute;ak, &eacute;s leggyakrabban arra haszn&aacute;lhat&oacute;k, hogy kider&iacute;ts&uuml;k, a gyerekfolyamat hogyan fejeződ&ouml;tt be.</span></p>
+<table style="border-collapse: collapse; width: 100%; height: 280px;" border="1">
+<tbody>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WIFEXITED(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Igaz &eacute;rt&eacute;ket ad, ha a gyerek hiba n&eacute;lk&uuml;l l&eacute;pett ki (exit()-tel vagy main() f&uuml;ggv&eacute;nyből).</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WEXITSTATUS(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Visszaadja a kil&eacute;p&eacute;si k&oacute;dot (pl. return &eacute;rt&eacute;k a main() f&uuml;ggv&eacute;ny v&eacute;g&eacute;n).</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WIFSIGNALED(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Igazzal t&eacute;r vissza, ha a gyerekfolyamat jel miatt &aacute;llt le.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WTERMSIG(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Melyik jel miatt &aacute;llt le.</span></td>
+</tr>
+<tr style="height: 77px;">
+<td style="width: 27.3876%; height: 77px;"><span style="font-size: 14pt;">WCOREDUMP(status)</span></td>
+<td style="width: 72.6124%; height: 77px;"><span style="font-size: 14pt;">Igaz &eacute;rt&eacute;kű, ha a folyamat core dumpot k&eacute;sz&iacute;tett (snapshot a program munkamem&oacute;ri&aacute;j&aacute;r&oacute;l, processzorregisztereiről, abban az esetben, ha a program &ouml;sszeomlik vagy le&aacute;ll).</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WIFSTOPPED(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Igazat ad, ha a gyerek stop szign&aacute;l miatt &aacute;llt meg.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WSTOPSIG(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Melyik stop jel miatt &aacute;llt meg.</span></td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 27.3876%; height: 29px;"><span style="font-size: 14pt;">WIFCONTINUED(status)</span></td>
+<td style="width: 72.6124%; height: 29px;"><span style="font-size: 14pt;">Igazzal t&eacute;r vissza, amennyiben a folyamat folytat&oacute;dott egy SIGCONT jel ut&aacute;n.</span></td>
+</tr>
+</tbody>
+</table>
+<p>A waitpid() f&uuml;ggv&eacute;ny harmadik argumentimak&eacute;nt megkapott opci&oacute;k r&eacute;szben k&uuml;l&ouml;nf&eacute;le flagek rendelhetők hozz&aacute;.&nbsp;</p>
+<p>&nbsp;</p>
